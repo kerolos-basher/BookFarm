@@ -1,0 +1,113 @@
+form {
+    max-width: 400px; 
+    margin: 0 auto; 
+    padding: 20px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .form-control {
+    width: 100%; 
+    padding: 10px; 
+    margin-bottom: 15px; 
+    border: 1px solid #ccc; 
+    border-radius: 3px; 
+    box-sizing: border-box; 
+    transition: all 0.3s ease-in-out; 
+  }
+  
+  .form-control:focus {
+    border-color: #007bff; 
+    outline: none; 
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
+  }
+  
+  button[type="submit"] {
+    background-color: #007bff; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 3px; 
+    cursor: pointer; 
+    transition: all 0.3s ease-in-out; 
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0069d9; 
+  }
+
+
+  .carousel-inner img {
+    width: 100%;
+    border-radius: 10px; /* Rounded corners */
+    transition: transform 0.5s ease; /* Animation on hover */
+}
+.carousel-item {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+.carousel-item:hover img {
+    transform: scale(1.05); /* Scale effect on hover */
+}
+.card {
+/* ... (previous card styles) ... */
+transition: all 0.3s ease-in-out; /* Add transition for smooth animations */
+}
+
+.card:hover {
+/* ... (previous hover styles) ... */
+transform: translateY(-5px); /* Increase hover lift */
+box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+h5 {
+font-size: 1.2rem; 
+font-weight: 600; 
+color: #333; 
+margin-bottom: 10px; 
+transition: all 0.4s ease-in-out; 
+}
+
+h5:hover {
+color: #007bff; /* Example hover color */
+transform: translateY(-4px); 
+}
+
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    transform: perspective(500px) translateZ(10px); 
+  }
+  
+  .form-label:hover {
+    transform: perspective(500px) translateZ(15px); 
+    color: #007bff; 
+  }
+
+
+ 
+/* تفاصيل البنك  */
+.bank-details {
+  background-color: #ffffff;
+  border: 2px solid #4CAF50;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  height:300px; /* ضبط ارتفاع محدد للصندوق */
+  display: flex; /* استخدام Flexbox داخل الـ div */
+  flex-direction: column; /* محاذاة العناصر رأسياً */
+  justify-content: center; /* توسيط الفقرات عموديًا */
+  align-items: center; /* توسيط الفقرات أفقيًا */
+  text-align: center; /* توسيط النص داخل الفقرات */
+}
+.bank-details p {
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 5px 0; /* لتقليل المسافة بين الفقرات */
+}
+.bank-details p span {
+  font-weight: bold;
+  color: #333;
+}

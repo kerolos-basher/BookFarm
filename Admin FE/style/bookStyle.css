@@ -1,0 +1,36 @@
+.scrollable-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px;
+    scroll-behavior: smooth;
+  }
+  .scrollable-row::-webkit-scrollbar {
+    height: 8px;
+  }
+  .scrollable-row::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 10px;
+  }
+  .scrollable-row::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  .card {
+    min-width: 300px;
+    max-width: 800px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  .card img {
+    object-fit: fill; /* Ensure the image covers its area */
+    height: 300px; /* Ensure the image height matches caption height */
+  }
+  .carousel-item {
+    object-fit: fill; 
+    height: 500px; /* Set height for the carousel */
+    background-size: auto;
+    background-position: center;
+  }

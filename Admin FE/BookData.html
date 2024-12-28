@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الحجوزات</title>
+    <style>
+      /* Basic card styling */
+  #cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    background-color: #fff;
+  }
+
+  .card-image {
+    max-width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+  }
+
+  p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  .delete-button {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .delete-button:hover {
+    background-color: #cc0000;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+    </style>
+</head>
+<body>
+    <div id="cardContainer"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          // Fetch data from your API
+          const response = await fetch("https://localhost:7125/api/BookFarm");
+          
+          // Check if response is OK
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const rooms = await response.json();
+    
+          // Function to render cards dynamically
+          function renderCards(data) {
+            const container = document.getElementById('cardContainer');
+            container.innerHTML = ''; // Clear container before rendering
+    
+            data.forEach(item => {
+              const card = document.createElement('div');
+              card.classList.add('card'); // Add CSS class for styling
+    
+              // Card HTML structure
+              card.innerHTML = `
+                <div class="card-content">
+                    <h2 class="card-title">صورة الهوية</h2>
+                  <img src="${item.PicturePath}" alt="${item.Name}" class="card-image">
+                    <h2 class="card-title">صورة إيصال التأكيد</h2>
+                  <img src="${item.PicturePath}" alt="${item.Name}" class="card-image">
+                  <h2 class="card-title">${item.Name}</h2>
+                  <p><strong>Email:</strong> ${item.Email}</p>
+                  <p><strong>Phone:</strong> ${item.PhoneNumber}</p>
+                  <p><strong>From:</strong> ${item.DateFrom}</p>
+                  <p><strong>To:</strong> ${item.DateTo}</p>
+                  ${item.placeID ? `
+                    <p><strong>Place:</strong> ${item.place?.Name || "N/A"}</p>
+                    <p><strong>Description:</strong> ${item.place?.Description || "N/A"}</p>
+                    <p><strong>Price/Night:</strong> $${item.place?.PriceForNight || "N/A"}</p>
+                  ` : ''}
+                  <button class="delete-button">Delete</button>
+                </div>
+              `;
+                
+
+              card.querySelector('.delete-button').addEventListener('click', async () => {
+            try {
+              const deleteResponse = await fetch(`https://localhost:7125/api/DeleteBook/${item.Id}`, {
+                method: 'DELETE'
+              });
+
+              if (!deleteResponse.ok) {
+                throw new Error(`Failed to delete card with ID ${item.Id}`);
+              }
+
+              // Remove card from DOM if deletion is successful
+              container.removeChild(card);
+            } catch (error) {
+              console.error(`Error deleting card:`, error);
+              alert('Failed to delete the card. Please try again.');
+            }
+          });
+              // Append card to container
+              container.appendChild(card);
+            });
+          }
+    
+          // Render cards using the fetched data
+          renderCards(rooms);
+        } catch (error) {
+          console.error("Error fetching rooms:", error);
+          const container = document.getElementById('cardContainer');
+          container.innerHTML = '<p>Failed to load data. Please try again later.</p>';
+        }
+      });
+    </script>
+
+
+
+
+    <!-- Cards will be appended here dynamically
+    <div id="cardContainer"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+   // const cardRow = document.getElementById("cardRow");
+
+    try {
+      // Fetch data from your API
+      const response = await fetch("https://localhost:7125/api/BookFarm");
+      const rooms = await response.json();
+        function renderCards(data) {
+            const container = document.getElementById('cardContainer');
+            container.innerHTML = ''; // Clear container
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                // Card HTML
+                card.innerHTML += `
+                    <img src="${item.PicturePath}" alt="${item.Name}">
+                    <h2>${item.Name}</h2>
+                    <p><span>Email:</span> ${item.Email}</p>
+                    <p><span>Phone:</span> ${item.PhoneNumber}</p>
+                    <p><span>From:</span> ${item.DateFrom}</p>
+                    <p><span>To:</span> ${item.DateTo}</p>
+                    <p><span>Place:</span> ${item.place.Name}</p>
+                    <p><span>Description:</span> ${item.place.Description}</p>
+                    <p><span>Price/Night:</span> $${item.place.PriceForNight}</p>
+                `;
+
+                // Append card to container
+                container.appendChild(card);
+            });
+        }}catch{
+            console.error("Error fetching rooms:", error);  
+        }})
+    
+        // Call the function to render cards
+        //renderCards(jsonData);
+
+      //  Example: Fetching data from API
+        //Uncomment and replace URL with your backend endpoint
+        
+        // async function fetchData() {
+        //     try {
+        //         const response = await fetch('https://localhost:7125/api/BookFarm');
+        //         const data = await response.json();
+        //         renderCards(data);
+        //     } catch (error) {
+        //         console.error('Error fetching data:', error);
+        //     }
+        // }
+        // fetchData();
+        
+    </script> -->
+</body>
+
+
+</html>
