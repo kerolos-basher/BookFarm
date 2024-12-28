@@ -84,8 +84,13 @@
 
 
 
-      <app-date-range-picker [unavailableDates]="unavailableDates" [minDate]="minDate" [maxDate]="maxDate">
-      </app-date-range-picker>
+      <app-date-range-picker
+      [unavailableDates]="unavailableDates"
+      [minDate]="minDate"
+      [maxDate]="maxDate"
+      (dateRangeSelected)="onDateRangeSelected($event)">
+    </app-date-range-picker>
+    
 
 
       <div class="col-12 text-center">

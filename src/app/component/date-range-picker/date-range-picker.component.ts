@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -26,6 +26,7 @@ export class DateRangePickerComponent {
   @Input() unavailableDates: Date[] = [];
   @Input() minDate: Date | null = null;
   @Input() maxDate: Date | null = null;
+  @Output() dateRangeSelected = new EventEmitter<{ startDate: Date | null; endDate: Date | null }>();
 
   startDate: Date | null = null;
   endDate: Date | null = null;
@@ -33,6 +34,25 @@ export class DateRangePickerComponent {
   validationMessage: string | null = null;
 constructor(private snackBar: MatSnackBar){}
   
+  // onDateChange(event: any): void {
+  //   const selectedDate = event.value;
+
+  //   if (this.isSelectingStartDate) {
+  //     this.startDate = selectedDate;
+  //     this.endDate = null; // Reset end date when start date changes
+  //     this.validationMessage = null; // Reset validation message
+  //   } else {
+  //     if (this.startDate && selectedDate >= this.startDate) {
+  //       this.endDate = selectedDate;
+  //       this.validateDateRange(this.startDate, this.endDate!);
+  //     } else {
+  //       this.validationMessage = 'End date must be after or equal to the start date.';
+  //     }
+  //   }
+
+  //   this.isSelectingStartDate = !this.isSelectingStartDate;
+  // }
+
   onDateChange(event: any): void {
     const selectedDate = event.value;
 
@@ -44,6 +64,9 @@ constructor(private snackBar: MatSnackBar){}
       if (this.startDate && selectedDate >= this.startDate) {
         this.endDate = selectedDate;
         this.validateDateRange(this.startDate, this.endDate!);
+
+        // Emit the selected date range
+        this.dateRangeSelected.emit({ startDate: this.startDate, endDate: this.endDate });
       } else {
         this.validationMessage = 'End date must be after or equal to the start date.';
       }
@@ -51,7 +74,6 @@ constructor(private snackBar: MatSnackBar){}
 
     this.isSelectingStartDate = !this.isSelectingStartDate;
   }
-
   isDateAvailable = (date: Date | null): boolean => {
     if (!date) return false;
     return !this.unavailableDates.some(

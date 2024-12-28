@@ -25,20 +25,16 @@ export class BookService {
         this.places.set(data);
       });
   }
-  //dates = signal<string[]>([]); // Assuming the API returns an array of strings
-  days = signal<number[]>([]);
-  months = signal<number[]>([]);
-  years = signal<number[]>([]);
+  dates = signal<string[]>([]); // Assuming the API returns an array of strings
+
 getDates(id: number): void {
   this.httpClient
     .get<string[]>(`${this.baseApi}/PlaceBookDate/${id}`)
     .subscribe((data) => {
-      //this.dates.set(data); // Update the signal with the fetched dates
+      this.dates.set(data); // Update the signal with the fetched dates
 
       // Extract days, months, and years from the dates
-      this.days.set(data.map(date => Number(date.split("-")[2]))); // Convert days to numbers
-      this.months.set(data.map(date => Number(date.split("-")[1]))); // Convert months to numbers
-      this.years.set(data.map(date => Number(date.split("-")[0]))); // Extracting the year
+      // Extracting the year
     });
 }
 

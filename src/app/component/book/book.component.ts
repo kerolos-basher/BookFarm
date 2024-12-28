@@ -26,10 +26,12 @@ import { DateRangePickerComponent } from '../date-range-picker/date-range-picker
 })
 export class BookComponent implements OnInit  {
 
-  unavailableDates: Date[] = [new Date(2024, 11, 25), new Date(2024, 11, 31)];
-  minDate: Date = new Date(2024, 0, 1); // January 1, 2024
-  maxDate: Date = new Date(2024, 11, 31); // December 31, 2024
-
+  unavailableDates: Date[] = [];
+  minDate: Date = new Date(); // January 1, 2024
+  maxDate: Date = new Date(2050, 11, 31); // December 31, 2024
+  base64String = ""
+  selectedStartDate: Date | null = null;
+  selectedEndDate: Date | null = null;
 
   bookingForm: FormGroup;
   selectedFile: File | null = null;
@@ -61,45 +63,82 @@ export class BookComponent implements OnInit  {
     debugger
     const selectedPlace = this.bookingForm.get('dropdown')?.value;
     this.bookService.getDates(selectedPlace);
+    
    
     if (selectedPlace) {
-      const days = this.bookService.days();
-      const months = this.bookService.months();
-      const years = this.bookService.years();
+      this.bookService.dates().forEach(element => {
+        this.unavailableDates.push (new Date (element))
+      });
+      // [new Date(2024, 11, 25), new Date(2024, 11, 31)]
+      // const days = this.bookService.days();
+      // const months = this.bookService.months();
+      // const years = this.bookService.years();
 
       // Make arrays distinct
-      this.disabledDays = [...new Set(days)];
-      this.disabledMonths = [...new Set(months)];
-      this.disabledYears = [...new Set(years)];
+    
       // this.bookingForm.get('startDate')?.enable();
       // this.bookingForm.get('endDate')?.enable();
     } 
   }
+  // onFileChange(event: any): void {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.selectedFile = file;
+  //     this.bookingForm.patchValue({ picture: file.name });
+  //   }
+  // }
+ 
   onFileChange(event: any): void {
+    debugger;
+
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
-      this.bookingForm.patchValue({ picture: file.name });
+      
+      // Use FileReader to convert file to Base64
+      const reader = new FileReader();
+      reader.onload = () => {
+        // Check if FileReader has a result
+        if (reader.result) {
+          this.base64String = reader.result.toString().split(',')[1];
+          // this.bookingForm.patchValue({ picture: base64String }); // Patch Base64 string to the form
+          // console.log('Base64 String:', base64String); // Debugging log
+        }
+      };
+  
+      reader.onerror = (error) => {
+        console.error('Error reading file:', error);
+      };
+  
+      reader.readAsDataURL(file); // Trigger Base64 conversion
+    } else {
+      console.error('No file selected');
     }
+  }
+  onDateRangeSelected(event: { startDate: Date | null; endDate: Date | null }): void {
+    this.selectedStartDate = event.startDate;
+    this.selectedEndDate = event.endDate;
+    console.log('Selected Date Range:', event);
   }
 
   onSubmit(): void {
-    if (this.bookingForm.invalid || !this.selectedFile) {
-      alert('Please fill out all fields and upload a valid image.');
-      return;
-    }
+    debugger
+    // if (this.bookingForm.invalid || !this.selectedFile) {
+    //   alert('Please fill out all fields and upload a valid image.');
+    //   return;
+    // }
  
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64String = reader.result?.toString().split(',')[1];
+   // const reader = new FileReader();
+    //reader.onload = () => {
+      //const base64String = reader.result?.toString().split(',')[1];
 
       const postData = {
         Name: this.bookingForm.get('name')?.value,
         Email: this.bookingForm.get('email')?.value,
         PhoneNumber: this.bookingForm.get('phone')?.value,
-        Picture: base64String, // Send Base64 image to backend
-        DateFrom: this.bookingForm.get('startDate')?.value,
-        DateTo: this.bookingForm.get('endDate')?.value,
+        Picture: this.base64String, // Send Base64 image to backend
+        DateFrom: this.selectedStartDate,
+        DateTo: this.selectedEndDate,
         ConfirmCode: Array.from({ length: 12 }, () => Math.floor(Math.random() * 10)).join(''),
         PlaceID: this.bookingForm.get('dropdown')?.value
       };
@@ -113,9 +152,9 @@ export class BookComponent implements OnInit  {
           alert('Error submitting the booking.');
         }
       );
-    };
+   // };
 
-    reader.readAsDataURL(this.selectedFile);
+    //reader.readAsDataURL(this.selectedFile);
   }
 
   dateFilter = (date: Date | null): boolean => {
