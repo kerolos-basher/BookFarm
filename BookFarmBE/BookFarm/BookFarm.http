@@ -1,0 +1,10 @@
+@BookFarm_HostAddress = https://localhost:7125
+
+GET {{BookFarm_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{BookFarm_HostAddress}}/weatherforecast
+
+###
