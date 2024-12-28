@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfirmBookComponent } from './confirm-book.component';
+import { ConfirmBookComponent } from './ConfirmBook.component';
 
 describe('ConfirmBookComponent', () => {
   let component: ConfirmBookComponent;

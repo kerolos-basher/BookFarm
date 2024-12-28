@@ -1,0 +1,102 @@
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div
+      *ngFor="let item of carouselItems; let i = index"
+      [class.active]="i === 0"
+      class="carousel-item">
+      <img
+        [src]="item.ImageUrl"
+        class="d-block w-100"
+        [alt]="item.CaptionTitle"
+      />
+      <div class="carousel-caption d-none d-md-block">
+        <h4>{{ item.CaptionTitle }}</h4>
+        <p>{{ item.CaptionText }}</p>
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExample"
+    data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExample"
+    data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<br>
+<div class="container">
+  <div class="text-center title">
+    <h1 class="display-4 text-primary">تأكيد الحجز</h1>
+    <p class="lead text-secondary">لقد ارسلنا لك كود لتأكيد الحجز</p>
+  </div>
+  <hr class="my-4" />
+</div>
+
+<div class="container py-5">
+  <div class="text-center mb-4">
+    <h1 class="display-6 text-primary">أدخل كود التأكيد</h1>
+    <p class="text-muted">من فضلك ادخل الكود المرسل لك  الى البريد الإلكتروني</p>
+  </div>
+  <form [formGroup]="confirmCodeForm" (ngSubmit)="onSubmit()" class="shadow p-4 rounded bg-light">
+    <!-- Input Field -->
+    <div class="mb-4">
+      <label for="codeField" class="form-label fw-bold">أدخل كود التأكيد</label>
+      <input
+        type="text"
+        formControlName="confirmCode"
+        class="form-control form-control-lg"
+        id="codeField"
+        placeholder="من فضلك أدخل كود تأكيد الحجز" />
+      <div *ngIf="confirmCodeForm.get('confirmCode')?.invalid && confirmCodeForm.get('confirmCode')?.touched" class="text-danger mt-2">
+        يجب إدخال كود التأكيد
+      </div>
+    </div>
+    <!-- Submit Button -->
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="confirmCodeForm.invalid">
+        تأكيد الحجز
+      </button>
+    </div>
+  </form>
+</div>
+
+<br>
+<div class="bank-details-container d-flex justify-content-center align-items-center">
+  <div class="bank-details-card shadow-lg p-4 rounded bg-light">
+    <h1 class="text-primary text-center mb-4">ADIB : أسم المصرف</h1>
+    <p class="bank-detail">HASSAN OBAID KHALIFA AL GHASHAISH ALMARRI <strong>اسم صاحب الحساب:</strong></p>
+    <p class="bank-detail">14997442 <strong>:رقم الحساب</strong></p>
+    <p class="bank-detail">AE050500000000014997442 <strong>:رقم الآيبان</strong></p>
+    <p class="bank-detail">ABDIAEADXXX <strong>السويفت:</strong></p>
+  </div>
+</div>
+
+<br>
+<div *ngIf="showUploadForm" class="container py-5">
+  <form [formGroup]="ConfirmForm"  class="needs-validation shadow p-4 rounded bg-light" novalidate>
+    <h2 class="text-center mb-4 text-primary">تحميل صورة الإيصال</h2>
+    <div class="row">
+      <div class="col-md-6 offset-md-3 text-center">
+        <label for="picture" class="form-label fw-bold">صورة إيصال الدفع</label>
+        <input type="file" id="picture" class="form-control" (change)="onFileChange($event)" required />
+        <div *ngIf="ConfirmForm.get('picture')?.invalid && ConfirmForm.get('picture')?.touched" class="text-danger mt-2">
+          يجب تحميل صورة إيصال الدفع
+        </div>
+      </div>
+    </div>
+    <div class="col-12 text-center mt-4">
+      <button type="submit" (click)="onConfirmSubmit()" class="btn btn-primary btn-lg w-50" [disabled]="ConfirmForm.invalid">أحجز الأن</button>
+    </div>
+  </form>
+</div>
