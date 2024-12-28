@@ -3,9 +3,11 @@
 </video> -->
 
 
- 
+
+
 <div class="container mt-5">
   <h2 class="text-center mb-4">المزارع المتاحة</h2>
+
 
   <div class="container mt-5">
     <div class="row flex-nowrap overflow-auto py-3">
@@ -23,19 +25,27 @@
     </div>
   </div>
 
+
   <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
     <div class="row g-3">
       <!-- Name -->
       <div class="col-md-6 text-center">
-        <label for="name" class="form-label">الأسم</label>
-        <input type="text" id="name" class="form-control" formControlName="name" placeholder="Enter your name" required />
+        <label for="name" class="form-label">
+          الأسم
+        </label>
+        <input type="text" id="name" class="form-control" formControlName="name" placeholder="Enter your name" required>
       </div>
+
 
       <!-- Email -->
       <div class="col-md-6 text-center">
-        <label for="email" class="form-label">الأيميل</label>
-        <input type="email" id="email" class="form-control" formControlName="email" placeholder="Enter your email" required />
+        <label for="email" class="form-label">
+          الأيميل
+        </label>
+        <input type="email" id="email" class="form-control" formControlName="email" placeholder="Enter your email"
+          required>
       </div>
+
 
       <!-- Phone Number -->
       <!-- <div class="col-md-6">
@@ -43,69 +53,45 @@
         <input type="tel" id="phone" class="form-control" formControlName="phone" placeholder="Enter your phone number" required />
       </div> -->
       <div class="col-md-6 text-center">
-        <label for="phone" class="form-label">رقم الهاتف</label>
-        <input 
-          type="tel" 
-          id="phone" 
-          class="form-control" 
-          formControlName="phone" 
-          placeholder="Enter your phone number" 
-          required 
-        />
+        <label for="phone" class="form-label">
+          رقم الهاتف
+        </label>
+        <input type="tel" id="phone" class="form-control" formControlName="phone" placeholder="Enter your phone number"
+          required>
       </div>
+
 
       <!-- Picture Upload -->
       <div class="col-md-6 text-center">
-        <label for="picture" class="form-label">صورة الهوية</label>
-        <input type="file" id="picture" class="form-control" (change)="onFileChange($event)" required />
+        <label for="picture" class="form-label">
+          صورة الهوية
+        </label>
+        <input type="file" id="picture" class="form-control" (change)="onFileChange($event)" required>
       </div>
+
 
       <!-- Dropdown -->
       <div class="col-md-6 text-center">
-        <label for="dropdown" class="form-label">اختر المكان</label>
-        <select
-          id="dropdown"
-          class="form-select"
-          formControlName="dropdown"
-          required
-          (change)="onPlaceSelected()"
-        >
-          <option *ngFor="let place of bookService.places()" [value]="place.Id">{{ place.Name }}</option>
+        <label for="dropdown" class="form-label">
+          اختر المكان
+        </label>
+        <select id="dropdown" class="form-select" formControlName="dropdown" required (change)="onPlaceSelected()">
+          <option *ngFor="let place of bookService.places()" [value]="place.Id">
+            {{ place.Name }}
+          </option>
         </select>
       </div>
 
-    
-      <app-date-range-picker 
-      [unavailableDates]="unavailableDates"
-      [minDate]="minDate"
-      [maxDate]="maxDate">
-    </app-date-range-picker>
-
-      <!-- <div class="col-md-12 text-center">
-  <label for="datePicker" class="form-label d-block mb-2">تاريخ الفترة</label>
-  <mat-form-field appearance="outline" class="w-100 shadow-sm">
-    <mat-label>اختر الفترة</mat-label>
-    <mat-date-range-input [rangePicker]="rangePicker" formGroupName="dateRange">
-      <input
-        matStartDate
-        placeholder="تاريخ البداية"
-        formControlName="start"
-      />
-      <input
-        matEndDate
-        placeholder="تاريخ النهاية"
-        formControlName="end"
-      />
-    </mat-date-range-input>
-    <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
-    <mat-date-range-picker #rangePicker></mat-date-range-picker>
-  </mat-form-field>
-</div> -->
 
 
-      <!-- Submit Button -->
+      <app-date-range-picker [unavailableDates]="unavailableDates" [minDate]="minDate" [maxDate]="maxDate">
+      </app-date-range-picker>
+
+
       <div class="col-12 text-center">
-        <button type="submit" class="btn btn-primary mt-3 w-50">أحجز الأن</button>
+        <button type="submit" class="btn btn-primary mt-3 w-50">
+          أحجز الأن
+        </button>
       </div>
     </div>
   </form>

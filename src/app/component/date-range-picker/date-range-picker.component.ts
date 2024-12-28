@@ -6,6 +6,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-date-range-picker',
   standalone: true,
@@ -29,7 +31,7 @@ export class DateRangePickerComponent {
   endDate: Date | null = null;
   isSelectingStartDate: boolean = true; // Toggle between start and end date
   validationMessage: string | null = null;
-
+constructor(private snackBar: MatSnackBar){}
   
   onDateChange(event: any): void {
     const selectedDate = event.value;
@@ -67,7 +69,9 @@ export class DateRangePickerComponent {
       );
 
       if (isUnavailable) {
-        alert('The selected date range includes unavailable dates.');
+        this.openSnackbar(
+          'The selected date range includes unavailable dates. Please choose a valid range.'
+        );
         this.startDate = null;
         this.endDate = null;
         this.isSelectingStartDate = true;
@@ -78,5 +82,11 @@ export class DateRangePickerComponent {
       currentDate.setDate(currentDate.getDate() + 1);
     }
   }
-
+  openSnackbar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 5000, // Duration in milliseconds
+      verticalPosition: 'bottom', // Position: 'top' | 'bottom'
+      horizontalPosition: 'center', // Position: 'start' | 'center' | 'end' | 'left' | 'right'
+    });
+  }
 }
