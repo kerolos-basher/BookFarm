@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    
+    <title>حجز المزعة</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+</head>
+
+<body class="p-3 m-0 border-0 bd-example m-0 border-0">
+  <div id="carouselExampleCaptions" class="carousel slide">
+      
+    <!-- <div class="carousel-inner">
+      <div class="carousel-item active">
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            // Fetch carousel data
+            fetch('https://localhost:7125/api/Carousel/carousel') // Replace with your API endpoint
+              .then(response => response.json())
+              .then(data => {
+                const firstElement= data[0];
+                const carouselInner = document.querySelector('.carousel-inner');
+
+                const newCarouselItem = document.createElement('div');
+                newCarouselItem.className = 'carousel-item active';
+                  newCarouselItem.innerHTML =  `
+        <img src="${firstElement.ImageUrl}" class="card-img-top img-top" alt="${firstElement.CaptionTitle}">
+        <div class="carousel-caption d-none d-md-block">
+          <br>
+          <br>
+          <h4>${firstElement.CaptionTitle}</h4>
+          <p>${firstElement.CaptionText}</p>
+        </div>
+      </div>
+      `;
+      carouselInner.appendChild(newCarouselItem);
+    })
+    })
+    </script>  
+     </div>
+    </div> -->
+    
+    <video class="d-block w-100" autoplay muted loop>
+      <source src="assets/vidoes/video.mp4" type="video/mp4">
+    </video>
+  <br>
+  <br>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center title" id="formContainer">
+        <h2 class="mb-4">احجز الآن معنا!</h2>
+        <a routerLink="book">
+          <button class="btn btn-primary btn-lg w-100 mb-3"> أحجز معانا الأن</button>
+        </a>
+        <a routerLink="confirmBook">
+          <button class="btn btn-secondary btn-lg w-100" id="showFormButton">تأكيد حجز مسبق</button>
+        </a>
+      </div>
+    </div>
+  </div>
+ </div>
+ 
+  <br>
+  <!-- <div class="row" id="rowData">
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Fetch carousel data
+        fetch('https://localhost:7125/api/Carousel/carousel') // Replace with your API endpoint
+          .then(response => response.json())
+          .then(data => {
+            const carouselInner = document.querySelector('.row');
+
+            const newItem = document.createElement('div');
+            data.forEach((item, index) => {
+            
+            
+            newItem.className = 'row active';
+            if(index%4==0&&index!=0)
+            {
+              newItem.innerHTML +=`<div class="row" id="rowData${index}">`;
+            }
+              newItem.innerHTML +=  `
+   <div class="col-12 col-sm-6 col-lg-3 mb-4">
+        <div class="card">
+            <img src="${item.ImageUrl}" class="card-img-top img-fluid" alt="${item.CaptionTitle}">
+            <div class="card-body">
+                <h5 class="card-title text-center">${item.CaptionText}</h5>
+            </div>
+        </div>
+    </div>`;
+            if(index%4==0&&index!=0)
+            {
+              newItem.innerHTML +=`</div>`;
+            }})
+    carouselInner.appendChild(newItem);})})
+    </script>
+    </div> -->
+
+<div class="container mt-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+      <div class="col" *ngFor="let card of cards">
+        <div class="card h-100 shadow">
+          <img [src]="card.ImageUrl" class="card-img-top img-fluid" [alt]="card.CaptionTitle">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ card.CaptionText }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+
+</html>
