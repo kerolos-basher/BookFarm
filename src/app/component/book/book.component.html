@@ -75,73 +75,13 @@
       </div>
 
     
-      <!-- <div class="col-md-6">
-        <label for="startDate" class="form-label">تاريخ البداية</label>
-        <input 
-          type="date" 
-          id="startDate" 
-          class="form-control" 
-          formControlName="startDate" 
-          (change)="onDateChange($event)" 
-          required 
-        />
-      </div> -->
-      <!-- <div class="col-md-6 text-center=">
-        <label for="startDate" class="form-label">تاريخ البداية</label>
-        <mat-form-field class="example-full-width">
-          <input
-            matInput
-            [matDatepicker]="picker"
-            formControlName="startDate"
-            [matDatepickerFilter]="dateFilter"
-            placeholder="Select a date"
-            required
-          />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </div> -->
-      <!-- <div class="col-md-6 text-center">
-        <label for="startDate" class="form-label d-block mb-2">تاريخ البداية</label>
-        <mat-form-field appearance="outline" class="w-100 shadow-sm">
-          <mat-label>تاريخ البداية</mat-label>
-          <input
-            id="FirstDate"
-            matInput
-            [matDatepicker]="picker"
-            formControlName="startDate"
-            placeholder="Select a date"
-            [matDatepickerFilter]="dateFilter"
-            required
-          />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </div>
+      <app-date-range-picker 
+      [unavailableDates]="unavailableDates"
+      [minDate]="minDate"
+      [maxDate]="maxDate">
+    </app-date-range-picker>
 
-      <div class="col-md-6 text-center">
-        <label for="endDate" class="form-label d-block mb-2">تاريخ النهاية</label>
-        <mat-form-field appearance="outline" class="w-100 shadow-sm">
-          <mat-label>تاريخ البداية</mat-label>
-          <input
-          id="SecondDate"
-            matInput
-            [matDatepicker]="picker2"
-            formControlName="endDate"
-            placeholder="Select a date"
-            [matDatepickerFilter]="dateFilter"
-            required
-          />
-          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-          <mat-datepicker #picker2></mat-datepicker>
-        </mat-form-field>
-      </div> -->
-      <!-- <div class="col-md-6 text-center">
-        <label for="endDate" class="form-label">تاريخ النهاية</label>
-        <input type="date" id="endDate" class="form-control" formControlName="endDate" required />
-      </div> -->
-
-      <div class="col-md-12 text-center">
+      <!-- <div class="col-md-12 text-center">
   <label for="datePicker" class="form-label d-block mb-2">تاريخ الفترة</label>
   <mat-form-field appearance="outline" class="w-100 shadow-sm">
     <mat-label>اختر الفترة</mat-label>
@@ -160,7 +100,7 @@
     <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
     <mat-date-range-picker #rangePicker></mat-date-range-picker>
   </mat-form-field>
-</div>
+</div> -->
 
 
       <!-- Submit Button -->

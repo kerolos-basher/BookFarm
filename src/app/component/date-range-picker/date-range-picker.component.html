@@ -1,0 +1,27 @@
+ 
+  <mat-form-field appearance="outline" class="date-field">
+    <mat-label>Select Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      (dateChange)="onDateChange($event)"
+      [min]="minDate"
+      [max]="maxDate"
+      [matDatepickerFilter]="isDateAvailable"
+      placeholder="{{ isSelectingStartDate ? 'Select Start Date' : 'Select End Date' }}"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  
+  <div class="selected-date">
+    <p>Start Date: {{ startDate ? (startDate | date) : 'Not Selected' }}</p>
+    <p>End Date: {{ endDate ? (endDate | date) : 'Not Selected' }}</p>
+  </div>
+  
+  <div *ngIf="validationMessage" class="error-message">
+    <p>{{ validationMessage }}</p>
+  </div> 
+ 
+  
+  

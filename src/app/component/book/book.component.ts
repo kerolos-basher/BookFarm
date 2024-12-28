@@ -8,6 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Place } from './book.interface';
+import { DateRangePickerComponent } from '../date-range-picker/date-range-picker.component';
 @Component({
   selector: 'app-book',
   standalone: true,
@@ -18,11 +19,18 @@ import { Place } from './book.interface';
     MatFormFieldModule,
     ReactiveFormsModule,
     CommonModule,
+    DateRangePickerComponent
   ],
   templateUrl: './book.component.html',
   styleUrl: './book.component.scss'
 })
 export class BookComponent implements OnInit  {
+
+  unavailableDates: Date[] = [new Date(2024, 11, 25), new Date(2024, 11, 31)];
+  minDate: Date = new Date(2024, 0, 1); // January 1, 2024
+  maxDate: Date = new Date(2024, 11, 31); // December 31, 2024
+
+
   bookingForm: FormGroup;
   selectedFile: File | null = null;
   disabledDays: number[] = []; 
