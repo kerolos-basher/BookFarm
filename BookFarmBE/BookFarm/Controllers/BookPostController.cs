@@ -29,7 +29,7 @@ namespace BookFarm.Controllers
         return BadRequest("Invalid data.");
       }
 
-      var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+      var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
       if (!Directory.Exists(uploadsFolder))
       {
         Directory.CreateDirectory(uploadsFolder);
@@ -86,7 +86,7 @@ namespace BookFarm.Controllers
       admin_body.AppendLine("Villa number : "+ request.PlaceID);
       admin_body.AppendLine("from date : "+ request.DateFrom);
       admin_body.AppendLine("to date : "+ request.DateTo);
-      admin_body.AppendLine($"EID image link : https://api.liwavillas.com/{relativePath}");
+      admin_body.AppendLine($"EID image link : https://api.liwavillas.com{relativePath}");
       var r = await _emailService.SendEmailAsync("Almarri.hassan@gmail.com", "Villa Booking Details", admin_body.ToString(), false);
 
       return Ok();
