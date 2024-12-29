@@ -1,4 +1,4 @@
-﻿using BookFarm.Controllers.Request;
+using BookFarm.Controllers.Request;
 using BookFarm.Data;
 using BookFarm.Entities;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +27,7 @@ namespace BookFarm.Controllers
                 return BadRequest("Invalid data.");
             }
 
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
