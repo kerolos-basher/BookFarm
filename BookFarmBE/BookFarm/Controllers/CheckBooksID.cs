@@ -1,4 +1,4 @@
-﻿using BookFarm.Data;
+using BookFarm.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,14 +16,14 @@ namespace BookFarm.Controllers
         }
         public class BookRequest
         {
-            public int Id { get; set; }
+            public string Id { get; set; }
         }
         [HttpPost]
 
         public async Task<IActionResult> GetBookByID([FromBody] BookRequest request)
         {
 
-            if (request == null || request.Id <= 0)
+            if (request == null || request.Id == "")
             {
                 return BadRequest(new { message = "Invalid ID. Please provide a valid ID." });
             }

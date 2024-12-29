@@ -8,6 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-confirm-book',
@@ -29,7 +30,7 @@ export class ConfirmBookComponent implements OnInit {
   ConfirmForm: FormGroup;
   selectedFile: File | null = null;
   carouselItems: any[] = [];
-  apiUrl = 'https://localhost:7125/api/Carousel/carousel';
+  apiUrl =environment.apiUrl+'/Carousel/carousel';
 
   showUploadForm = false;
   showNotFoundMessage = false;
@@ -62,10 +63,11 @@ export class ConfirmBookComponent implements OnInit {
  
 
   onSubmit(): void {
+    debugger
     if (this.confirmCodeForm.valid) {
       const code = this.confirmCodeForm.value.confirmCode;
 
-      this.http.post('https://localhost:7125/api/CheckBooksID', { Id: code }).subscribe({
+      this.http.post(environment.apiUrl+'/CheckBooksID', { Id: code }).subscribe({
     
         next: () => {
           this.showUploadForm = true;

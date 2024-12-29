@@ -1,4 +1,18 @@
+.card-img-top.img-top {
+  width: 100%;
+  height: auto;
+}
 
+.carousel-item {
+  position: relative;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
 
 .card img {
     object-fit: cover; /* Ensure the image covers its area */

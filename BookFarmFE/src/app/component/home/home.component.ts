@@ -7,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { CardService } from '../../services/card.service';
+import { HttpClient } from '@angular/common/http';
+import{environment} from'../../../environments/environment.development'
 export interface CardObject {
   Id: number;
   ImageUrl: string;
@@ -33,13 +35,27 @@ export interface CardObject {
 
 export class HomeComponent implements OnInit{
   cards: CardObject[] = [];
+  apiUrl: string = environment.apiUrl; // Replace with your actual API URL
+  carouselData: any[] = [];
 
-  constructor(private cardService: CardService) {}
+  constructor(private cardService: CardService,private http: HttpClient) {}
 
   ngOnInit(): void {
+   this.fetchCarouselData();
     this.fetchCards();
   }
 
+
+  fetchCarouselData(): void {
+    this.http.get<any[]>(`${this.apiUrl}/Carousel/carousel`).subscribe({
+      next: (data) => {
+        this.carouselData = data;
+      },
+      error: (err) => {
+        console.error('Error fetching carousel data:', err);
+      }
+    });
+  }
   fetchCards(): void {
     this.cardService.getCards().subscribe(
       (data) => {

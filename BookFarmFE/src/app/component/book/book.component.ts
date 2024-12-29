@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Place } from './book.interface';
 import { DateRangePickerComponent } from '../date-range-picker/date-range-picker.component';
+import { environment } from '../../../environments/environment.development';
+
 @Component({
   selector: 'app-book',
   standalone: true,
@@ -25,6 +27,8 @@ import { DateRangePickerComponent } from '../date-range-picker/date-range-picker
   styleUrl: './book.component.scss'
 })
 export class BookComponent implements OnInit  {
+  carouselData: any[] = [];
+  apiUrl: string = environment.apiUrl; // Replace with your actual API URL
 
   unavailableDates: Date[] = [];
   minDate: Date = new Date(); // January 1, 2024
@@ -39,7 +43,7 @@ export class BookComponent implements OnInit  {
   disabledMonths: number[] = [];
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
-  constructor(private fb: FormBuilder, public bookService: BookService) {
+  constructor(private fb: FormBuilder,private http: HttpClient, public bookService: BookService) {
     this.bookingForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -55,9 +59,19 @@ export class BookComponent implements OnInit  {
 
   ngOnInit(): void {
     this.bookService.getPlaces();
-   
+    this.fetchCarouselData();
+
    
   }
+  fetchCarouselData(): void {
+    this.http.get<any[]>(`${this.apiUrl}/Carousel/carousel`).subscribe({
+      next: (data) => {
+        this.carouselData = data;
+      },
+      error: (err) => {
+        console.error('Error fetching carousel data:', err);
+      }
+    });}
 
   onPlaceSelected(): void {
     debugger

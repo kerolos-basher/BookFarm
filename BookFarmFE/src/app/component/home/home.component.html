@@ -6,7 +6,7 @@
         <script>
           document.addEventListener('DOMContentLoaded', function () {
             // Fetch carousel data
-            fetch('https://localhost:7125/api/Carousel/carousel') // Replace with your API endpoint
+            fetch(apiUrl+'/Carousel/carousel') // Replace with your API endpoint
               .then(response => response.json())
               .then(data => {
                 const firstElement= data[0];
@@ -31,9 +31,23 @@
      </div>
     </div> -->
     
-    <video class="d-block w-100" autoplay muted loop>
+
+    <div class="carousel-inner">
+      <div 
+        *ngFor="let item of carouselData; let i = index" 
+        [class.active]="i === 0" 
+        class="carousel-item">
+        <img [src]="item.ImageUrl" class="card-img-top img-top" [alt]="item.CaptionTitle">
+        <div class="carousel-caption d-none d-md-block">
+          <h4>{{ item.CaptionTitle }}</h4>
+          <p>{{ item.CaptionText }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- <video class="d-block w-100" autoplay muted loop>
       <source src="assets/vidoes/video.mp4" type="video/mp4">
-    </video>
+    </video> -->
   <br>
   <br>
   <div class="container mt-5">

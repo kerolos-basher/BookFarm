@@ -64,3 +64,72 @@ mat-form-field {
   height: auto; /* Maintains aspect ratio */
   object-fit: cover; /* Ensures the image covers the container */
 }
+
+.card-img-top.img-top {
+  width: 100%;
+  height: auto;
+}
+
+.carousel-item {
+  position: relative;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+
+
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #007bff; /* Blue for general alerts */
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 300px;
+  max-width: 400px;
+  font-family: Arial, sans-serif;
+  animation: fadeIn 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Success style */
+.success {
+  background-color: #4caf50; /* Green */
+}
+
+/* Error style */
+.error {
+  background-color: #f44336; /* Red */
+}
+
+/* Close button */
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

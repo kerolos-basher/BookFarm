@@ -1,4 +1,4 @@
-﻿using BookFarm.Entities;
+using BookFarm.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -15,7 +15,8 @@ namespace BookFarm.Data
         public DbSet<Place> places { get; set; }
         public DbSet<CarouselItem> carouselItems { get; set; }
         public DbSet<ConfirmBook> ConfirmBook { get; set; }
+         public DbSet<PriceForSpacialDates> priceForSpacialDates { get; set; }
 
 
-    }
+  }
 }
