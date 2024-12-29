@@ -3,7 +3,6 @@ using BookFarm.Data;
 using BookFarm.Entities;
 using BookFarm.Entities.mail;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Crypto.Macs;
 using System.Text;
 
 namespace BookFarm.Controllers
@@ -81,13 +80,36 @@ namespace BookFarm.Controllers
       var admin_body = new StringBuilder();
       admin_body.AppendLine("book with confirmation code : " + request.ConfirmCode);
       admin_body.AppendLine("for : " + request.Name);
-      admin_body.AppendLine("phone number : "+ request.PhoneNumber);
-      admin_body.AppendLine("Email : "+ request.Email);
-      admin_body.AppendLine("Villa number : "+ request.PlaceID);
-      admin_body.AppendLine("from date : "+ request.DateFrom);
-      admin_body.AppendLine("to date : "+ request.DateTo);
+      admin_body.AppendLine("phone number : " + request.PhoneNumber);
+      admin_body.AppendLine("Email : " + request.Email);
+      admin_body.AppendLine("Villa number : " + request.PlaceID);
+      admin_body.AppendLine("from date : " + request.DateFrom);
+      admin_body.AppendLine("to date : " + request.DateTo);
       admin_body.AppendLine($"EID image link : https://api.liwavillas.com{relativePath}");
       var r = await _emailService.SendEmailAsync("Almarri.hassan@gmail.com", "Villa Booking Details", admin_body.ToString(), false);
+
+      return Ok();
+
+    }
+    [HttpGet()]
+
+    public async Task<IActionResult> AddUser1()
+    {
+      var result = await _emailService.SendEmailAsync(
+      email: "kerolos0onsy@gmail.com",
+      subject: "Test Email",
+      body: "<h1>Hello World!</h1>",
+      isHtml: true
+      );
+
+      if (result.IsSuccess)
+      {
+        Console.WriteLine("Email sent successfully!");
+      }
+      else
+      {
+        Console.WriteLine($"Failed to send email: {result.Message}");
+      }
 
       return Ok();
 
