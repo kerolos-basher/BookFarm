@@ -43,13 +43,15 @@ mat-form-field {
   background-color: #0d6efd; /* Bootstrap Primary Color */
   border-radius: 4px;
 }
-
+.row {
+  scroll-behavior: smooth;
+}
 .row::-webkit-scrollbar-thumb:hover {
   background-color: #0056b3; /* Darker shade on hover */
 }
 .card-img-container {
   width: 100%;
-  height: 12rem; /* Set the desired height for the images */
+  height: auto; /* Set the desired height for the images */
   overflow: hidden; /* Ensures any overflow is clipped */
   display: flex;
   align-items: center;
@@ -158,4 +160,37 @@ html, body {
 
 .price-value {
   color: #007bff;
+}
+/* Cards adjust their width dynamically */
+.responsive-card {
+  width: 100%; /* Default to take full width of column */
+  max-width: 18rem; /* Limit to a max width */
+}
+
+/* Ensure images adjust height to 40% of the screen */
+.card-img-container {
+  position: relative;
+  overflow: hidden; /* Ensure no overflow */
+  height: 40vh; /* 40% of the viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa; /* Placeholder background */
+}
+
+.card-img-container img {
+  width: auto; /* Maintain aspect ratio */
+  height: 100%; /* Ensure full height is covered */
+  object-fit: contain; /* Prevent cropping */
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 576px) {
+  .responsive-card {
+    max-width: 100%; /* Make cards full-width for smaller screens */
+  }
+
+  .card-img-container {
+    height: 30vh; /* Reduce height to 30% on smaller screens for better usability */
+  }
 }
