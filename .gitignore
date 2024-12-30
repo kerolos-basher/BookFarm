@@ -400,3 +400,5 @@ FodyWeavers.xsd
 *.sln.iml
 /.angular/cache/17.3.11
 /BookFarmFE/.angular/cache/17.3.11/FarmProjectFE/.tsbuildinfo
+/BookFarmFE/.angular/cache/17.3.11/FarmProjectFE/.tsbuildinfo
+/.gitignore
