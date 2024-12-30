@@ -108,17 +108,17 @@ constructor(private snackBar: MatSnackBar ,public dateService:DateService,public
       this.selectedEndDate = event.value;
       this.dateService.globalEnddate=event.value;
       this.validateDateRange(new Date(this.dateService.globalStartdate),event.value)
-
+    
       if (!this.isDateAvailable(this.selectedEndDate))
         {
           this.dateService.globalEnddate =''
         }
-        effect(()=>{
-          debugger
-          this.bookService.dates().forEach(element => {
-            this.unavailableDates.push (new Date (element))
-          });
-        })
+        // effect(()=>{
+        //   debugger
+        //   this.bookService.dates().forEach(element => {
+        //     this.unavailableDates.push (new Date (element))
+        //   });
+        // })
       console.log('Selected End Date:', this.selectedEndDate);
     }
 

@@ -93,6 +93,9 @@ export class BookComponent implements OnInit  {
 
 //********
 
+
+
+
   constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
     this.bookingForm = this.fb.group({
       name: ['', Validators.required],
@@ -107,10 +110,39 @@ export class BookComponent implements OnInit  {
 
       }),
     });
-  }
-
- 
   
+
+  }
+  onCheckboxClick(): void {
+    if (this.bookingForm.get('acceptRules')?.value) {
+      // Fetch data from API on checkbox click
+      this.http.get<number>(environment.apiUrl+`/api/GetTotalPrice?PlaceID=${this.bookingForm.get('dropdown')?.value}&FromDate=${this.dateService.globalStartdate}&ToDate=${this.dateService.globalEnddate}`).subscribe(
+        (response) => {
+          this.insuranceValue = response; // Update the insurance value
+          this.label = `لقد قرأت وأوافق على الشروط - التأمين ${this.insuranceValue} درهم`;
+        },
+        (error) => {
+          console.error('Error fetching data', error);
+        }
+      );
+    }
+  }
+  // onCheckboxClick():vo{
+  //   if (this.bookingForm.get('acceptRules')?.value) {
+  //     // Fetch data from API on checkbox click
+  //     this.http.get<String>({environment.baseApi}`/api/GetTotalPrice?PlaceID=${id}&FromDate=${from}&ToDate=${to}`).subscribe(
+  //       (response) => {
+  //         this.insuranceValue = response; // Update the insurance value
+  //         this.label = `لقد قرأت وأوافق على الشروط - التأمين ${this.insuranceValue} درهم`;
+  //       },
+  //       (error) => {
+  //         console.error('Error fetching data', error);
+  //       }
+  //     );
+  //   }}
+  
+
+
   ngOnInit(): void {
     this.bookService.getPlaces();
     this.fetchCarouselData();
@@ -135,7 +167,7 @@ export class BookComponent implements OnInit  {
     });}
 
   onPlaceSelected(): void {
-    debugger
+ 
     const selectedPlace = this.bookingForm.get('dropdown')?.value;
     this.bookService.getDates(selectedPlace);
     
@@ -167,7 +199,7 @@ export class BookComponent implements OnInit  {
   // }
  
   onFileChange(event: any): void {
-    debugger;
+  
 
     const file = event.target.files[0];
     if (file) {
@@ -197,12 +229,7 @@ export class BookComponent implements OnInit  {
     debugger
     this.selectedStartDate = this.dateService.globalStartdate;
     this.selectedEndDate =  this.dateService.globalStartdate;
-  if(this.selectedEndDate!=''){
-        debugger
-       
-        this.label = `لقد قرأت وأوافق على الشروط - التأمين ${ this.bookService.Total()} درهم`;
-
-      };
+ 
   
     
   }
