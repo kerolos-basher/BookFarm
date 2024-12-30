@@ -37,8 +37,13 @@ getDates(id: number): void {
       // Extracting the year
     });
 }
-
-
+Total = signal<string>(''); // Assuming the API returns an array of strings
+onCheckboxClick(id:number,from:string,to:string): void {
+  this.httpClient
+  .get<string>(`${this.baseApi}`+`/api/GetTotalPrice?PlaceID=${id}&FromDate=${from}&ToDate=${to}`)
+  .subscribe((data)=>this.Total.set(data));
+}
+ 
   postBooking(data: any) {
     debugger
     const apiUrl = `${this.baseApi}/BookPost/AddUser`; // Replace with your actual API endpoint

@@ -100,13 +100,28 @@
       (dateRangeSelected)="onDateRangeSelected()">
     </app-date-range-picker>
 
- 
-    
-    <label for="phone" class="form-label">
-    </label>
+       
+    <div class="rules-container">
+      <mat-checkbox formControlName="acceptRules" class="simple-checkbox">
+        لقد قرأت وأوافق على الشروط التالية:
+      </mat-checkbox>
+      <ul class="rules-list">
+        <li>ممنوع إصطحاب الحيوانات</li>
+        <li>يتم دفع الرسوم مقدماً</li>
+        <li>قيمة التأمين 1000 درهم</li>
+        <li>استيعاب الغرف للأشخاص:</li>
+        <ul>
+          <li>الاستوديو (3 أشخاص)</li>
+          <li>غرفة وصالة (5 أشخاص)</li>
+          <li>غرفتين وصالة (7 أشخاص)</li>
+        </ul>
+      </ul>
+    </div>
+
+    <br>
 
       <div class="col-12 text-center">
-        <button  type="submit" class="btn btn-primary mt-3 w-50">
+        <button  type="submit"  class="btn btn-primary mt-3 w-50">
           أحجز الأن
         </button>
       </div>

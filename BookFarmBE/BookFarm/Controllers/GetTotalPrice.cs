@@ -17,7 +17,7 @@ namespace BookFarm.Controllers
       _context = context;
     }
     [HttpGet]
-    public async Task<ActionResult<int>> GetTotal(int PlaceID,string FromDate,string ToDate)
+    public async Task<ActionResult<string>> GetTotal(int PlaceID,string FromDate,string ToDate)
     {
      double price = 0;
      var dates = _context.priceForSpacialDates.Where(p=>p.placeID==PlaceID);
@@ -45,7 +45,7 @@ namespace BookFarm.Controllers
      
 
 
-     return Ok(price);
+     return Ok(price.ToString());
 
 
 

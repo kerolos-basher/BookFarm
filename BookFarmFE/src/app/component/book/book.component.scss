@@ -133,3 +133,37 @@ mat-form-field {
     transform: translateY(0);
   }
 }
+.rules-container {
+  margin-top: 20px;
+  font-family: 'Roboto', sans-serif;
+  text-align: right; /* Align text to the right */
+  direction: rtl; /* Right-to-left text direction */
+}
+
+.rules-checkbox {
+  display: block;
+  margin-bottom: 15px;
+  font-size: 18px; /* Larger checkbox label */
+}
+
+.checkbox-label {
+  font-weight: bold;
+}
+
+.rules-list {
+  padding-right: 25px; /* Add padding for alignment */
+  list-style-type: disc; /* Main list bullet style */
+  font-size:15px; /* Increase size of the text */
+  color: #333; /* Neutral text color */
+  line-height: 2; /* Space between lines */
+}
+
+.rules-list ul {
+  padding-right: 35px; /* Indent nested lists */
+  list-style-type: circle; /* Nested list bullet style */
+  font-size: 12px; /* Slightly smaller size for nested points */
+}
+
+.rules-list li {
+  margin-bottom: 10px; /* Space between list items */
+}

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { BookService } from '../../services/book.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -14,6 +14,7 @@ import { DateService } from '../../services/Date.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../pop-up/pop-up.component';
 
+
 @Component({
   selector: 'app-book',
   standalone: true,
@@ -25,15 +26,56 @@ import { PopUpComponent } from '../pop-up/pop-up.component';
     ReactiveFormsModule,
     CommonModule,
     DateRangePickerComponent,
-    PopUpComponent
+    PopUpComponent,
 
   ],
   templateUrl: './book.Component.html',
-  styleUrl: './book.component.scss'
+  styleUrl: './book.component.scss',
+  template:` <div class="simple-checkbox-container">
+      <mat-checkbox
+        formControlName="acceptRules"
+        (change)="onCheckboxClick()"
+        class="simple-checkbox"
+      >
+        {{ label }}
+      </mat-checkbox>
+      <p class="rules-text">
+        1. ممنوع إصطحاب الحيوانات<br />
+        2. يتم دفع الرسوم مقدماً<br />
+        3. قيمة التأمين {{ insuranceValue }} درهم<br />
+        4. استيعاب الغرف للأشخاص:<br />
+        &emsp;- الاستوديو (3 أشخاص)<br />
+        &emsp;- غرفة وصالة (5 أشخاص)<br />
+        &emsp;- غرفتين وصالة (7 أشخاص)
+      </p>
+    </div>`,
+    styles:` .simple-checkbox-container {
+        font-family: 'Roboto', sans-serif;
+        text-align: right;
+        direction: rtl;
+        margin: 15px 0;
+      }
+
+      .simple-checkbox {
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      .rules-text {
+        margin-top: 10px;
+        font-size: 16px;
+        line-height: 1.8;
+        color: #333;
+      }`
 })
+
+
 export class BookComponent implements OnInit  {
   carouselData: any[] = [];
   apiUrl: string = environment.apiUrl; // Replace with your actual API URL
+
+  label = 'لقد قرأت وأوافق على الشروط'; // Default label
+  insuranceValue = 1000; 
 
   unavailableDates: Date[] = [];
   minDate: Date = new Date(); // January 1, 2024
@@ -48,6 +90,9 @@ export class BookComponent implements OnInit  {
   disabledMonths: number[] = [];
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
+
+//********
+
   constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
     this.bookingForm = this.fb.group({
       name: ['', Validators.required],
@@ -58,11 +103,14 @@ export class BookComponent implements OnInit  {
       dateRange: this.fb.group({
         start: ['', Validators.required],
         end: ['', Validators.required],
+        acceptRules: [false, Validators.requiredTrue], // Checkbox is required
+
       }),
     });
   }
 
-
+ 
+  
   ngOnInit(): void {
     this.bookService.getPlaces();
     this.fetchCarouselData();
@@ -107,6 +155,9 @@ export class BookComponent implements OnInit  {
       // this.bookingForm.get('endDate')?.enable();
     } 
   }
+
+  // Accept Rueles 
+ 
   // onFileChange(event: any): void {
   //   const file = event.target.files[0];
   //   if (file) {
@@ -146,7 +197,14 @@ export class BookComponent implements OnInit  {
     debugger
     this.selectedStartDate = this.dateService.globalStartdate;
     this.selectedEndDate =  this.dateService.globalStartdate;
-   
+  if(this.selectedEndDate!=''){
+        debugger
+       
+        this.label = `لقد قرأت وأوافق على الشروط - التأمين ${ this.bookService.Total()} درهم`;
+
+      };
+  
+    
   }
  
   openDialog(){
@@ -154,6 +212,8 @@ export class BookComponent implements OnInit  {
   };
   onSubmit(): void {
     debugger
+
+   
    if(this.dateService.globalStartdate==''||this.dateService.globalEnddate=='')
    {
     //this.dialog.open();

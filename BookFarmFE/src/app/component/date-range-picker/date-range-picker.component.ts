@@ -113,6 +113,12 @@ constructor(private snackBar: MatSnackBar ,public dateService:DateService,public
         {
           this.dateService.globalEnddate =''
         }
+        effect(()=>{
+          debugger
+          this.bookService.dates().forEach(element => {
+            this.unavailableDates.push (new Date (element))
+          });
+        })
       console.log('Selected End Date:', this.selectedEndDate);
     }
 
