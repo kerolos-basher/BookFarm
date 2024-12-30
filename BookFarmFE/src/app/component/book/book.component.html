@@ -100,10 +100,12 @@
       (dateRangeSelected)="onDateRangeSelected()">
     </app-date-range-picker>
 
- 
+    <div class="total-price-container">
+      <label class="total-price-label">
+        Total Price: <span class="price-value">{{ this.bookService.TotalPrice() +' AED' }}</span>
+      </label>
+    </div>
     
-    <label for="phone" class="form-label">
-    </label>
 
       <div class="col-12 text-center">
         <button  type="submit" class="btn btn-primary mt-3 w-50">

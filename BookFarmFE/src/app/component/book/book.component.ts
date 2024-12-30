@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { BookService } from '../../services/book.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -49,6 +49,8 @@ export class BookComponent implements OnInit  {
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
   constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
+  
+   
     this.bookingForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -62,7 +64,7 @@ export class BookComponent implements OnInit  {
     });
   }
 
-
+ 
   ngOnInit(): void {
     this.bookService.getPlaces();
     this.fetchCarouselData();
@@ -79,19 +81,23 @@ export class BookComponent implements OnInit  {
   fetchCarouselData(): void {
     this.http.get<any[]>(`${this.apiUrl}/Carousel/carousel`).subscribe({
       next: (data) => {
-        this.carouselData = data;
+        this.carouselData = data.map(item => ({
+          ...item,
+          ImageUrl: `${environment.ImgUrl}${item.ImageUrl}`
+        }));
       },
       error: (err) => {
         console.error('Error fetching carousel data:', err);
       }
     });}
 
+    
+
   onPlaceSelected(): void {
-    debugger
+    
     const selectedPlace = this.bookingForm.get('dropdown')?.value;
     this.bookService.getDates(selectedPlace);
-    
-   
+    this.bookService.currentSelectedPlace.set(selectedPlace);   
     if (selectedPlace) {
       this.bookService.dates().forEach(element => {
         this.unavailableDates.push (new Date (element))
@@ -116,7 +122,7 @@ export class BookComponent implements OnInit  {
   // }
  
   onFileChange(event: any): void {
-    debugger;
+    ;
 
     const file = event.target.files[0];
     if (file) {
@@ -143,7 +149,7 @@ export class BookComponent implements OnInit  {
     }
   }
   onDateRangeSelected(): void {
-    debugger
+    
     this.selectedStartDate = this.dateService.globalStartdate;
     this.selectedEndDate =  this.dateService.globalStartdate;
    
@@ -153,7 +159,7 @@ export class BookComponent implements OnInit  {
     this.dialog.open(PopUpComponent);
   };
   onSubmit(): void {
-    debugger
+    
    if(this.dateService.globalStartdate==''||this.dateService.globalEnddate=='')
    {
     //this.dialog.open();

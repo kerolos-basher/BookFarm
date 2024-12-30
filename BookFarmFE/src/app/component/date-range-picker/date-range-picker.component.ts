@@ -51,14 +51,14 @@ get unavailableDates(): Date[
 constructor(private snackBar: MatSnackBar ,public dateService:DateService,public bookService:BookService ){
 
   effect(()=>{
-    debugger
+    
     this.bookService.dates().forEach(element => {
       this.unavailableDates.push (new Date (element))
     });
   })
 }
   ngOnInit(): void {
-    debugger
+    
    console.log(this.unavailableDates);
   }
   
@@ -95,7 +95,7 @@ constructor(private snackBar: MatSnackBar ,public dateService:DateService,public
   //   }
 
   onDateChange(type: 'startDate' | 'endDate', event: any): void {
-    debugger
+    
     if (type === 'startDate') {
       this.selectedStartDate = event.value;
       this.dateService.globalStartdate=event.value;
@@ -105,8 +105,13 @@ constructor(private snackBar: MatSnackBar ,public dateService:DateService,public
       }
       console.log('Selected Start Date:', this.selectedStartDate);
     } else if (type === 'endDate') {
+      debugger
       this.selectedEndDate = event.value;
       this.dateService.globalEnddate=event.value;
+    
+        this.bookService.getTotalPrice(this.selectedStartDate!.toString(),this.selectedEndDate!.toString());
+               
+    
       this.validateDateRange(new Date(this.dateService.globalStartdate),event.value)
 
       if (!this.isDateAvailable(this.selectedEndDate))
@@ -141,7 +146,7 @@ constructor(private snackBar: MatSnackBar ,public dateService:DateService,public
     
   // }
   isDateAvailable = (date: Date | null): boolean => {
-    debugger
+    
     if (!date) return false;
   
     const inputDate = new Date(date.getFullYear(), date.getMonth(), date.getDate()); // Normalize input date
@@ -164,7 +169,7 @@ constructor(private snackBar: MatSnackBar ,public dateService:DateService,public
       );
 
       if (isUnavailable) {
-        debugger
+        
         this.openSnackbar(
           'The selected date range includes unavailable dates. Please choose a valid range.'
         );

@@ -30,7 +30,7 @@ export class ConfirmBookComponent implements OnInit {
   confirmCodeForm: FormGroup;
   ConfirmForm: FormGroup;
   selectedFile: File | null = null;
-  carouselItems: any[] = [];
+  carouselData: any[] = [];
   apiUrl =environment.apiUrl+'/Carousel/carousel';
 
   showUploadForm = false;
@@ -54,7 +54,10 @@ export class ConfirmBookComponent implements OnInit {
   fetchCarouselItems(): void {
     this.http.get<any[]>(this.apiUrl).subscribe({
       next: (data) => {
-        this.carouselItems = data;
+        this.carouselData = data.map(item => ({
+          ...item,
+          ImageUrl: `${environment.ImgUrl}${item.ImageUrl}`
+        }));
       },
       error: (error) => {
         console.error('Error fetching carousel items:', error);
@@ -69,7 +72,7 @@ export class ConfirmBookComponent implements OnInit {
    }
 
   onSubmit(): void {
-    debugger
+    
     if (this.confirmCodeForm.valid) {
       const code = this.confirmCodeForm.value.confirmCode;
 
@@ -94,7 +97,7 @@ export class ConfirmBookComponent implements OnInit {
   }
 
   onConfirmSubmit(): void {
-    debugger;
+    ;
     if (this.ConfirmForm.invalid || !this.selectedFile) {
       this.showPopup('⚠','يرجى التأكد من رفع الصورة','orange');
 
@@ -130,7 +133,7 @@ export class ConfirmBookComponent implements OnInit {
     );
   }
   // onConfirmSubmit(): void {
-  //   debugger
+  //   
   //   if (this.ConfirmForm.invalid || !this.selectedFile) {
   //     alert('Please fill out all fields and upload a valid image.');
   //     return;
@@ -163,7 +166,7 @@ export class ConfirmBookComponent implements OnInit {
   // }
 
   onFileChange(event: any): void {
-    debugger;
+    ;
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
@@ -191,7 +194,7 @@ export class ConfirmBookComponent implements OnInit {
 
 
   // onFileChange(event: any): void {
-  //   debugger
+  //   
   //   const file = event.target.files[0];
   //   if (file) {
   //     this.selectedFile = file;

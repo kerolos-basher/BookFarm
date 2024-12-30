@@ -13,7 +13,7 @@ export class BookService {
  
   baseFileApi: string = environment.apiUrl;
   httpClient = inject(HttpClient);
-
+  currentSelectedPlace = signal<number>(0);
   baseApi: string = environment.apiUrl;
   constructor() { }
 
@@ -37,10 +37,27 @@ getDates(id: number): void {
       // Extracting the year
     });
 }
+ TotalPrice = signal<string>(''); // Assuming the API returns an array of strings
 
+getTotalPrice(fromDate: string, toDate: string): void {
+  const url = environment.apiUrl+`/GetTotalPrice/TotalPrice?PlaceID=${this.currentSelectedPlace()}&FromDate=${fromDate}&ToDate=${toDate}`;
+
+  this.httpClient.get<string>(url).subscribe({
+    next: (data) => {
+     
+      this.TotalPrice .set(data);// Update the signal with the fetched dates
+
+      // Further processing, if needed
+    },
+    error: (err) => {
+      return '';
+      console.error('Error fetching data:', err);
+    }
+  });
+}
 
   postBooking(data: any) {
-    debugger
+    
     const apiUrl = `${this.baseApi}/BookPost/AddUser`; // Replace with your actual API endpoint
     return this.httpClient.post(apiUrl, data);
   }

@@ -49,7 +49,11 @@ export class HomeComponent implements OnInit{
   fetchCarouselData(): void {
     this.http.get<any[]>(`${this.apiUrl}/Carousel/carousel`).subscribe({
       next: (data) => {
-        this.carouselData = data;
+        this.carouselData = data.map(item => ({
+          ...item,
+          ImageUrl: `${environment.ImgUrl}${item.ImageUrl}`
+        }));
+     //   this.carouselData.ImageUrl = environment.apiUrl+this.carouselData.ImageUrl;
       },
       error: (err) => {
         console.error('Error fetching carousel data:', err);
@@ -59,7 +63,7 @@ export class HomeComponent implements OnInit{
   fetchCards(): void {
     this.cardService.getCards().subscribe(
       (data) => {
-        this.cards = data;
+        this.cards = data.slice(1);
       },
       (error) => {
         console.error('Error fetching cards', error);

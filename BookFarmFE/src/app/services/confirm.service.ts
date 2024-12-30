@@ -21,7 +21,7 @@ export class ConfirmService {
 
 
   postBooking(data: any) {
-    debugger
+    
     const apiUrl = `${this.baseApi}/ConfirmBook/comfirmBook`; // Replace with your actual API endpoint
     return this.httpClient.post(apiUrl, data);
   }

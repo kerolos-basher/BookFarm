@@ -5,6 +5,7 @@ export const routes: Routes = [
 
     { path: "book", loadComponent: () => import('./component/book/book.component').then((x) => x.BookComponent) },
     { path: "ConfirmBook", loadComponent: () => import('./component/ComfirmBook/ConfirmBook.component').then((x) => x.ConfirmBookComponent) },
+    { path: "admin", loadComponent: () => import('./component/admin/admin.component').then((x) => x.AdminComponent) },
 
    
 

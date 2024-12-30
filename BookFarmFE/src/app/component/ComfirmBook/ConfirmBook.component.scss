@@ -6,17 +6,57 @@ body {
     align-items: center; /* Center vertically */
     min-height: 100vh; /* Ensure full height of the viewport */
     flex-direction: column; /* Stack elements if needed */
+}.card-img-container {
+  width: 100%;
+  height: 12rem; /* Set the desired height for the images */
+  overflow: hidden; /* Ensures any overflow is clipped */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-    .card img {
-      object-fit: fill; /* Ensure the image covers its area */
-      height: 200px; /* Ensure the image height matches caption height */
-    }
-    .carousel-item {
-      object-fit: fill; 
-      height: 400px; /* Set height for the carousel */
-      background-size: auto;
-      background-position: center;
-    }
+
+.card-img-container img {
+  width: 100%;
+  height: auto; /* Maintains aspect ratio */
+  object-fit: cover; /* Ensures the image covers the container */
+}
+
+.card-img-top.img-top {
+  width: 100%;
+  height: auto;
+}
+
+.carousel-item {
+  position: relative;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+
+
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #007bff; /* Blue for general alerts */
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 300px;
+  max-width: 400px;
+  font-family: Arial, sans-serif;
+  animation: fadeIn 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
     .container {
         max-width: 600px;
         margin: 50px auto;

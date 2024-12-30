@@ -1,3 +1,18 @@
+.card-img-container {
+  width: 100%;
+  height: 12rem; /* Set the desired height for the images */
+  overflow: hidden; /* Ensures any overflow is clipped */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-img-container img {
+  width: 100%;
+  height: auto; /* Maintains aspect ratio */
+  object-fit: cover; /* Ensures the image covers the container */
+}
+
 .card-img-top.img-top {
   width: 100%;
   height: auto;
@@ -14,15 +29,27 @@
   right: 20px;
 }
 
-.card img {
-    object-fit: cover; /* Ensure the image covers its area */
-    height: 300px; /* Ensure the image height matches caption height */
-  }
-  .carousel-item {
-    height: 500px; /* Set height for the carousel */
-    background-size: cover;
-    background-position: center;
-  }.card {
+
+.custom-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #007bff; /* Blue for general alerts */
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  min-width: 300px;
+  max-width: 400px;
+  font-family: Arial, sans-serif;
+  animation: fadeIn 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+  .card {
   border-radius: 10px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
