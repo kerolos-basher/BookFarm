@@ -9,7 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
-
+import { MatDialog } from '@angular/material/dialog';
+import { PopUpComponent } from '../pop-up/pop-up.component';
 @Component({
   selector: 'app-confirm-book',
   standalone: true,
@@ -36,7 +37,7 @@ export class ConfirmBookComponent implements OnInit {
   showNotFoundMessage = false;
   showErrorMessage = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient ,public confirmServes: ConfirmService) {
+  constructor(private fb: FormBuilder, private http: HttpClient ,private dialog:MatDialog,public confirmServes: ConfirmService) {
     this.confirmCodeForm = this.fb.group({
       confirmCode: ['', Validators.required],
     })
@@ -60,7 +61,12 @@ export class ConfirmBookComponent implements OnInit {
       },
     });
   }
- 
+   showPopup(sign: string, message: string,color:string): void {
+     this.dialog.open(PopUpComponent, {
+       width: '400px',
+       data: { sign, message ,color },
+     });
+   }
 
   onSubmit(): void {
     debugger
@@ -90,7 +96,9 @@ export class ConfirmBookComponent implements OnInit {
   onConfirmSubmit(): void {
     debugger;
     if (this.ConfirmForm.invalid || !this.selectedFile) {
-      alert('Please fill out all fields and upload a valid image.');
+      this.showPopup('⚠','يرجى التأكد من رفع الصورة','orange');
+
+     
       return;
     }
   
@@ -98,7 +106,8 @@ export class ConfirmBookComponent implements OnInit {
     const base64String = this.ConfirmForm.value.picture; // Base64 string from form
   
     if (!base64String) {
-      alert('Error: Base64 string not generated.');
+      this.showPopup('⚠','خطاء في تحميل الصورة ','orange');
+     
       return;
     }
   
@@ -109,11 +118,14 @@ export class ConfirmBookComponent implements OnInit {
   
     this.confirmServes.postBooking(postData).subscribe(
       (response) => {
-        alert('تم الحجز بنجاح!');
+        this.showPopup('✔', 'تم الحجز تأكيد الحجز سيتم التواصل معكم في اقرب وقت','green');
+       
       },
       (error) => {
         console.error('Error:', error);
-        alert('Error submitting the booking.');
+      this.showPopup('⚠','خطاء في تحميل الصورة ','orange');
+
+       
       }
     );
   }

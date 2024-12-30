@@ -5006,6 +5006,8 @@ export {
   ObserversModule,
   BreakpointObserver,
   Breakpoints,
+  InteractivityChecker,
+  FocusTrapFactory,
   CdkTrapFocus,
   LiveAnnouncer,
   FocusMonitor,
@@ -5059,4 +5061,4 @@ export {
   MatRippleLoader,
   _MatInternalFormField
 };
-//# sourceMappingURL=chunk-2LI2433O.js.map
+//# sourceMappingURL=chunk-LH7ZFSDG.js.map

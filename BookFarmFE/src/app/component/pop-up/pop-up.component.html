@@ -1,0 +1,11 @@
+<div class="popup-container">
+  <h2 mat-dialog-title class="popup-title">
+    <span [style.color]="data.color">{{ data.sign }}</span> 
+  </h2>
+  <div mat-dialog-content class="popup-content">
+    <p>{{ data.message }}</p>
+  </div>
+  <div mat-dialog-actions align="end" class="popup-actions">
+    <button mat-raised-button color="primary" (click)="closeDialog()">OK</button>
+  </div>
+</div>

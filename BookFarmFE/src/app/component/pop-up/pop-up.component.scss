@@ -1,0 +1,30 @@
+.popup-container {
+    text-align: center;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .popup-title {
+    color: #4caf50; /* Green color for success */
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .popup-content {
+    font-size: 18px;
+    color: #333; /* Neutral text color */
+    margin: 20px 0;
+  }
+  
+  .popup-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  button {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }

@@ -11,6 +11,9 @@ import { Place } from './book.interface';
 import { DateRangePickerComponent } from '../date-range-picker/date-range-picker.component';
 import { environment } from '../../../environments/environment.development';
 import { DateService } from '../../services/Date.service';
+import { MatDialog } from '@angular/material/dialog';
+import { PopUpComponent } from '../pop-up/pop-up.component';
+
 @Component({
   selector: 'app-book',
   standalone: true,
@@ -21,7 +24,9 @@ import { DateService } from '../../services/Date.service';
     MatFormFieldModule,
     ReactiveFormsModule,
     CommonModule,
-    DateRangePickerComponent
+    DateRangePickerComponent,
+    PopUpComponent
+
   ],
   templateUrl: './book.Component.html',
   styleUrl: './book.component.scss'
@@ -43,7 +48,7 @@ export class BookComponent implements OnInit  {
   disabledMonths: number[] = [];
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
-  constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService ,public bookService: BookService) {
+  constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
     this.bookingForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -57,12 +62,20 @@ export class BookComponent implements OnInit  {
     });
   }
 
+
   ngOnInit(): void {
     this.bookService.getPlaces();
     this.fetchCarouselData();
-
+   
    
   }
+  showPopup(sign: string, message: string,color:string): void {
+    this.dialog.open(PopUpComponent, {
+      width: '400px',
+      data: { sign, message ,color },
+    });
+  }
+ 
   fetchCarouselData(): void {
     this.http.get<any[]>(`${this.apiUrl}/Carousel/carousel`).subscribe({
       next: (data) => {
@@ -136,12 +149,17 @@ export class BookComponent implements OnInit  {
    
   }
  
- 
+  openDialog(){
+    this.dialog.open(PopUpComponent);
+  };
   onSubmit(): void {
     debugger
    if(this.dateService.globalStartdate==''||this.dateService.globalEnddate=='')
    {
-    alert('مواعيد الحجز غير متاحه الأن');
+    //this.dialog.open();
+    this.showPopup('⚠','خطاء في البيانات يرجى التأكيد ','orange');
+
+    
    }
     // if (this.bookingForm.invalid || !this.selectedFile) {
     //   alert('Please fill out all fields and upload a valid image.');
@@ -165,13 +183,17 @@ export class BookComponent implements OnInit  {
       };
 
       this.bookService.postBooking(postData).subscribe(
+        
         (response) => {
-          alert('تم الحجز بنجاح!');
+          this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
+          //alert('تم الحجز بنجاح!');
           location.reload();
         },
         (error) => {
           console.error('Error:', error);
-          alert('خطاء في الحجز يرجي اعادة المحاولة ');
+          this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
+
+          this.showPopup('⚠','خطاء في الحجز يرجي اعادة المحاولة ','red');
 
         }
       );
