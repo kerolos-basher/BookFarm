@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Place } from './book.interface';
 import { DateRangePickerComponent } from '../date-range-picker/date-range-picker.component';
 import { environment } from '../../../environments/environment.development';
-
+import { DateService } from '../../services/Date.service';
 @Component({
   selector: 'app-book',
   standalone: true,
@@ -23,7 +23,7 @@ import { environment } from '../../../environments/environment.development';
     CommonModule,
     DateRangePickerComponent
   ],
-  templateUrl: './book.component.html',
+  templateUrl: './book.Component.html',
   styleUrl: './book.component.scss'
 })
 export class BookComponent implements OnInit  {
@@ -34,8 +34,8 @@ export class BookComponent implements OnInit  {
   minDate: Date = new Date(); // January 1, 2024
   maxDate: Date = new Date(2050, 11, 31); // December 31, 2024
   base64String = ""
-  selectedStartDate: Date | null = null;
-  selectedEndDate: Date | null = null;
+  selectedStartDate:string|null=null;
+  selectedEndDate: string | null = null;
 
   bookingForm: FormGroup;
   selectedFile: File | null = null;
@@ -43,7 +43,7 @@ export class BookComponent implements OnInit  {
   disabledMonths: number[] = [];
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
-  constructor(private fb: FormBuilder,private http: HttpClient, public bookService: BookService) {
+  constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService ,public bookService: BookService) {
     this.bookingForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -129,14 +129,20 @@ export class BookComponent implements OnInit  {
       console.error('No file selected');
     }
   }
-  onDateRangeSelected(event: { startDate: Date | null; endDate: Date | null }): void {
-    this.selectedStartDate = event.startDate;
-    this.selectedEndDate = event.endDate;
-    console.log('Selected Date Range:', event);
+  onDateRangeSelected(): void {
+    debugger
+    this.selectedStartDate = this.dateService.globalStartdate;
+    this.selectedEndDate =  this.dateService.globalStartdate;
+   
   }
-
+ 
+ 
   onSubmit(): void {
     debugger
+   if(this.dateService.globalStartdate==''||this.dateService.globalEnddate=='')
+   {
+    alert('مواعيد الحجز غير متاحه الأن');
+   }
     // if (this.bookingForm.invalid || !this.selectedFile) {
     //   alert('Please fill out all fields and upload a valid image.');
     //   return;
@@ -147,12 +153,13 @@ export class BookComponent implements OnInit  {
       //const base64String = reader.result?.toString().split(',')[1];
 
       const postData = {
+
         Name: this.bookingForm.get('name')?.value,
         Email: this.bookingForm.get('email')?.value,
         PhoneNumber: this.bookingForm.get('phone')?.value,
         Picture: this.base64String, // Send Base64 image to backend
-        DateFrom: this.selectedStartDate,
-        DateTo: this.selectedEndDate,
+        DateFrom: (this.dateService.globalStartdate),
+        DateTo: (this.dateService.globalEnddate),
         ConfirmCode: Array.from({ length: 12 }, () => Math.floor(Math.random() * 10)).join(''),
         PlaceID: this.bookingForm.get('dropdown')?.value
       };
@@ -160,15 +167,28 @@ export class BookComponent implements OnInit  {
       this.bookService.postBooking(postData).subscribe(
         (response) => {
           alert('تم الحجز بنجاح!');
+          location.reload();
         },
         (error) => {
           console.error('Error:', error);
-          alert('Error submitting the booking.');
+          alert('خطاء في الحجز يرجي اعادة المحاولة ');
+
         }
       );
    // };
 
     //reader.readAsDataURL(this.selectedFile);
+
+    // this.bookingForm.reset({
+    //   name: '',
+    //   email: '',
+    //   phone: '',
+    //   picture: null,
+    //   dropdown: null,
+      
+    // });
+    
+
   }
 
   dateFilter = (date: Date | null): boolean => {
