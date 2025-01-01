@@ -9,6 +9,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import{DateService}from '../../services/Date.service'
 import { BookService } from '../../services/book.service';
+import { DatePipe } from '@angular/common';
+
 @Component({
   selector: 'app-date-range-picker',
   standalone: true,
@@ -19,6 +21,7 @@ import { BookService } from '../../services/book.service';
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,],
+    providers: [DatePipe],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './date-range-picker.component.html',
   styleUrl: './date-range-picker.component.scss'
@@ -30,11 +33,7 @@ export class DateRangePickerComponent implements OnInit{
     (date) => new Date(date.getFullYear(), date.getMonth(), date.getDate()) // Strip time
   );
 }
-private _unavailableDates: Date[] = [  
-  new Date('2024-12-31T10:30:00'),
-  new Date('2024-12-29T15:45:00'),
-
-];
+private _unavailableDates: Date[]=[];
 get unavailableDates(): Date[
   
 ] {
@@ -48,7 +47,7 @@ get unavailableDates(): Date[
   selectedEndDate: Date | null = null;
   isSelectingStartDate: boolean = true; // Toggle between start and end date
   validationMessage: string | null = null;
-constructor(private snackBar: MatSnackBar ,public dateService:DateService,public bookService:BookService ){
+constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dateService:DateService,public bookService:BookService ){
 
   effect(()=>{
     
@@ -108,8 +107,9 @@ constructor(private snackBar: MatSnackBar ,public dateService:DateService,public
       debugger
       this.selectedEndDate = event.value;
       this.dateService.globalEnddate=event.value;
-    
-        this.bookService.getTotalPrice(this.selectedStartDate!.toString(),this.selectedEndDate!.toString());
+      const EndDate =this.selectedEndDate?.toLocaleDateString('en-GB');
+      const startDates = this.selectedStartDate?.toLocaleDateString('en-GB');
+        this.bookService.getTotalPrice(startDates!.toString(),EndDate!.toString());
                
     
       this.validateDateRange(new Date(this.dateService.globalStartdate),event.value)

@@ -19,6 +19,65 @@ namespace BookFarm.Controllers
       _context = context;
       _emailService = emailService;
     }
+    private string UploadImage(string base64Image, string uploadDirectory)
+    {
+      // Ensure the directory exists
+      if (!Directory.Exists(uploadDirectory))
+      {
+        Directory.CreateDirectory(uploadDirectory);
+      }
+
+      // Decode the Base64 string into a byte array
+      byte[] imageBytes = Convert.FromBase64String(base64Image);
+
+      // Determine the file extension dynamically
+      string extension = GetImageExtension(imageBytes);
+
+      if (string.IsNullOrEmpty(extension))
+      {
+        throw new Exception("Unsupported image format.");
+      }
+
+      // Generate a unique file name using a GUID
+      string fileName = $"{Guid.NewGuid()}.{extension}";
+      string fullPath = Path.Combine(uploadDirectory, fileName);
+      string returnPath = Path.Combine(uploadDirectory.Replace(".",""), fileName);
+
+      // Write the file to the directory
+      System.IO.File.WriteAllBytes(fullPath, imageBytes);
+
+      // Return the full path of the uploaded image
+      return returnPath;
+    }
+
+    private string GetImageExtension(byte[] fileBytes)
+    {
+      // Convert the first few bytes to a magic number (hex string)
+      string magicNumber = BitConverter.ToString(fileBytes.Take(4).ToArray());
+
+      // Dictionary of magic numbers and file extensions
+      var magicNumberDictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "FF-D8-FF", "jpg" },     // JPEG
+            { "89-50-4E-47", "png" },  // PNG
+            { "47-49-46-38", "gif" },  // GIF
+            { "42-4D", "bmp" },        // BMP
+            { "49-49-2A-00", "tiff" }, // TIFF
+            { "4D-4D-00-2A", "tiff" }, // TIFF
+        };
+
+      // Check if the magic number matches any known file types
+      foreach (var kvp in magicNumberDictionary)
+      {
+        if (magicNumber.StartsWith(kvp.Key))
+        {
+          return kvp.Value;
+        }
+      }
+
+      return null; // Unsupported file type
+    }
+
     [HttpPost("AddUser")]
 
     public async Task<IActionResult> AddUser([FromBody] BookFarmRequest request)
@@ -27,27 +86,10 @@ namespace BookFarm.Controllers
       {
         return BadRequest("Invalid data.");
       }
-
-      var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
-      if (!Directory.Exists(uploadsFolder))
-      {
-        Directory.CreateDirectory(uploadsFolder);
-      }
-
-      // Generate a unique file name for the image
-      var fileName = $"{Guid.NewGuid()}.jpg"; // Use .jpg or appropriate extension
-      var filePath = Path.Combine(uploadsFolder, fileName);
-
-      // Convert Base64 to byte array
-      byte[] imageBytes = Convert.FromBase64String(request.Picture);
-
-      // Write the image to the file system
-      System.IO.File.WriteAllBytes(filePath, imageBytes);
-
-      // Save the relative path to the database (if needed)
-      var relativePath = $"/uploads/{fileName}";
       try
       {
+        
+        var path = UploadImage(request.Picture,".\\uploads");
         //email to the user
         var user_body = new StringBuilder();
         user_body.AppendLine("Your confirmation code is : " + request.ConfirmCode);
@@ -57,17 +99,13 @@ namespace BookFarm.Controllers
         user_body.AppendLine("Phone : +971507155511");
         user_body.AppendLine("Email : Almarri.hassan@gmail.com");
         var r1 = await _emailService.SendEmailAsync(request.Email, "Villa Booking Details", user_body.ToString(), false);
-      }
-      catch (Exception ex)
-      {
-        return NotFound();
-      }
+      
       var bookAFarm = new BookAFarm
       {
         Name = request.Name,
         Email = request.Email,
         PhoneNumber = request.PhoneNumber,
-        PicturePath = relativePath,
+        PicturePath = path,
         DateFrom = request.DateFrom,
         DateTo = request.DateTo,
         ConfirmCode = request.ConfirmCode,
@@ -85,9 +123,13 @@ namespace BookFarm.Controllers
       admin_body.AppendLine("Villa number : " + request.PlaceID);
       admin_body.AppendLine("from date : " + request.DateFrom);
       admin_body.AppendLine("to date : " + request.DateTo);
-      admin_body.AppendLine($"EID image link : https://api.liwavillas.com{relativePath}");
+      admin_body.AppendLine($"EID image link : https://api.liwavillas.com{path}");
       var r = await _emailService.SendEmailAsync("Almarri.hassan@gmail.com", "Villa Booking Details", admin_body.ToString(), false);
-
+      }
+      catch (Exception ex)
+      {
+        return NotFound();
+      }
       return Ok();
 
     }

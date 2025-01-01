@@ -1,8 +1,7 @@
 using BookFarm.Data;
-using BookFarm.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace BookFarm.Controllers
 {
@@ -17,40 +16,82 @@ namespace BookFarm.Controllers
       _context = context;
     }
     [HttpGet("TotalPrice")]
-    public async Task<IActionResult> TotalPrice(int PlaceID,string FromDate,string ToDate)
+    public async Task<IActionResult> TotalPrice(int PlaceID, string FromDate, string ToDate)
     {
-     //double price = 0;
-     //var dates = _context.priceForSpacialDates.Where(p=>p.placeID==PlaceID);
-     //decimal i = _context.places.Where(p => p.Id == PlaceID).Select(p=>p.PriceForNight).FirstOrDefault();
-  
+      try
+      {
+        // Define the expected date format (DD/MM/YYYY)
+        string dateFormat = "dd/MM/yyyy";
+        var culture = CultureInfo.InvariantCulture;
 
-      //DateTime startDate = DateTime.Parse(FromDate);
-      //DateTime endDate = DateTime.Parse(ToDate);// End date
+        // Parse the dates using the specified format
+        if (!DateTime.TryParseExact(FromDate, dateFormat, culture, DateTimeStyles.None, out DateTime startDate))
+        {
+          return BadRequest("Invalid FromDate format. Expected format: DD/MM/YYYY.");
+        }
 
+        if (!DateTime.TryParseExact(ToDate, dateFormat, culture, DateTimeStyles.None, out DateTime endDate))
+        {
+          return BadRequest("Invalid ToDate format. Expected format: DD/MM/YYYY.");
+        }
 
-      //for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
-      //{
-      //  foreach (var item in dates)
-      //  {
-      //    if (item.Date.CompareTo(date.ToString())==0)
-      //    {
-      //      price += item.price;
-      //    }
-      //    else
-      //    {
-      //      price +=(double) i;
-      //    }
-      //  }
-      //}
+        // Ensure the start date is before the end date
+        if (endDate < startDate)
+        {
+          return BadRequest("EndDate must be greater than or equal to StartDate.");
+        }
 
-      return Ok('5');
+        // Retrieve the place from the database
+        var place = await _context.places.FirstOrDefaultAsync(p => p.Id == PlaceID);
+        if (place == null)
+        {
+          return NotFound("Place not found.");
+        }
 
-    // return Ok(price);
+        // Convert the daily price
+        double dailyPrice = Convert.ToDouble(place.PriceForNight);
 
+        // Define the special days
+        var specialDays = new List<DateTime>
+        {
+            new DateTime(2024, 12, 30),
+            new DateTime(2024, 12, 31),
+            new DateTime(2025, 1, 1),
+            new DateTime(2025, 1, 2),
+            new DateTime(2025, 1, 3),
+            new DateTime(2025, 1, 4),
+            new DateTime(2025, 1, 5),
+        };
 
+        // Calculate total cost
+        int totalDays = (endDate - startDate).Days + 1;
+        double totalCost = 0;
 
-     
+        for (int i = 0; i < totalDays; i++)
+        {
+          DateTime currentDate = startDate.AddDays(i);
+
+          // Check if the current date is a special day
+          if (specialDays.Contains(currentDate.Date))
+          {
+            totalCost += dailyPrice * 2; // Double the price for special days
+          }
+          else
+          {
+            totalCost += dailyPrice;
+          }
+        }
+
+        // Return the total cost
+        return Ok(totalCost.ToString());
+      }
+      catch (Exception ex)
+      {
+        // Handle unexpected errors
+        return StatusCode(500, $"An error occurred: {ex.Message}");
+      }
     }
+
 
 
   }
