@@ -22,7 +22,13 @@ export class BookService {
     this.httpClient
       .get<Place[]>(`${this.baseApi}/Places`)
       .subscribe((data) => {
-        this.places.set(data);
+        
+       
+        this.places.set( data.map(item=>({
+          ...item,
+          imgUrl :`${environment.ImgUrl}${item.imgUrl}`
+
+        })));
       });
   }
   dates = signal<string[]>([]); // Assuming the API returns an array of strings
@@ -40,21 +46,21 @@ getDates(id: number): void {
  TotalPrice = signal<string>(''); // Assuming the API returns an array of strings
 
 getTotalPrice(fromDate: string, toDate: string): void {
+  
   const url = environment.apiUrl+`/GetTotalPrice/TotalPrice?PlaceID=${this.currentSelectedPlace()}&FromDate=${fromDate}&ToDate=${toDate}`;
-
-  this.httpClient.get<string>(url).subscribe({
-    next: (data) => {
-     
-      this.TotalPrice .set(data);// Update the signal with the fetched dates
-
+  //this.TotalPrice.set('1 2 3 4 5 6'); // Clear the signal before fetching the data
+ 
+  this.httpClient.get<string>(url).subscribe((data:any)=>{
+    
+     debugger
+    this.TotalPrice .set(data.price);
+    console.log(this.TotalPrice+url)// Update the signal with the fetched dates
+//this.TotalPrice.set(" ler rrr lasl alsadl lasld asdlaspdlaspdl pasldpa slpd lp asldp aslp lp")
       // Further processing, if needed
     },
-    error: (err) => {
-      return '';
-      console.error('Error fetching data:', err);
-    }
-  });
+    );
 }
+
 
   postBooking(data: any) {
     

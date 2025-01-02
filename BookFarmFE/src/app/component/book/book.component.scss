@@ -148,23 +148,27 @@ html, body {
   text-align: center;
   padding: 20px;
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 7px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .total-price-label {
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #333;
+ 
 }
 
 .price-value {
-  color: #007bff;
+  //color: #007bff;
+  white-space: pre-wrap; /* Preserves spaces and line breaks */
+  font-family: monospace; /* Optional: Use a monospace font for better visibility of spaces */
+  color: #333; 
 }
 /* Cards adjust their width dynamically */
 .responsive-card {
   width: 100%; /* Default to take full width of column */
-  max-width: 18rem; /* Limit to a max width */
+  max-width: 15rem; /* Limit to a max width */
 }
 
 /* Ensure images adjust height to 40% of the screen */
@@ -193,4 +197,7 @@ html, body {
   .card-img-container {
     height: 30vh; /* Reduce height to 30% on smaller screens for better usability */
   }
+}
+p {
+  white-space: pre-wrap; /* Preserves spaces and line breaks */
 }

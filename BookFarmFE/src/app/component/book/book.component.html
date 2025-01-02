@@ -94,6 +94,7 @@
 
 
       <app-date-range-picker
+      *ngIf="isPlaceSelected"
       [unavailableDates]="unavailableDates"
       [minDate]="minDate"
       [maxDate]="maxDate"
@@ -102,7 +103,7 @@
 
     <div class="total-price-container">
       <label class="total-price-label">
-        Total Price: <span class="price-value">{{ this.bookService.TotalPrice() +' AED' }}</span>
+        Total Price: <span class="price-value">{{ this.bookService.TotalPrice() }}</span>
       </label>
     </div>
     

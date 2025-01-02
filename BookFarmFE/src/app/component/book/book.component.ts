@@ -41,6 +41,7 @@ export class BookComponent implements OnInit  {
   base64String = ""
   selectedStartDate:string|null=null;
   selectedEndDate: string | null = null;
+  isPlaceSelected: boolean = false;
 
   bookingForm: FormGroup;
   selectedFile: File | null = null;
@@ -94,7 +95,7 @@ export class BookComponent implements OnInit  {
     
 
   onPlaceSelected(): void {
-    
+    this.isPlaceSelected = true;
     const selectedPlace = this.bookingForm.get('dropdown')?.value;
     this.bookService.getDates(selectedPlace);
     this.bookService.currentSelectedPlace.set(selectedPlace);   
@@ -102,6 +103,7 @@ export class BookComponent implements OnInit  {
       this.bookService.dates().forEach(element => {
         this.unavailableDates.push (new Date (element))
       });
+      
       // [new Date(2024, 11, 25), new Date(2024, 11, 31)]
       // const days = this.bookService.days();
       // const months = this.bookService.months();
@@ -237,6 +239,8 @@ export class BookComponent implements OnInit  {
       !this.disabledWeekdays.includes(weekday) // Allow only enabled weekdays
     );
   }
+
+  
 }
   // dateFilter = (date: Date | null): boolean => {
   //   if (!date) return false;
@@ -252,3 +256,4 @@ export class BookComponent implements OnInit  {
   //   );
   // };
 // }
+

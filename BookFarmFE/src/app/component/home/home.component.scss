@@ -69,3 +69,37 @@
   font-family: 'Cairo', sans-serif;
   color: #333;
 }
+
+
+//link
+
+
+.map-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  max-width: 300px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.map-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.map-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #007BFF;
+}
+
+.map-link:hover {
+  background-color: #e9ecef;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

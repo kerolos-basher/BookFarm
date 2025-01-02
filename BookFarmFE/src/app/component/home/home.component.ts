@@ -63,7 +63,10 @@ export class HomeComponent implements OnInit{
   fetchCards(): void {
     this.cardService.getCards().subscribe(
       (data) => {
-        this.cards = data.slice(1);
+        this.cards = data.slice(1).map(Item=>({
+          ...Item,
+          ImageUrl:`${environment.ImgUrl}${Item.ImageUrl}`
+        }))
       },
       (error) => {
         console.error('Error fetching cards', error);

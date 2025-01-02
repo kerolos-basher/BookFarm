@@ -16,27 +16,30 @@
   
   
   <ng-template #content>
-<div class="total-price-container mt-4">
-    <div id="cardContainer">
-      <div *ngFor="let room of rooms" class="card">
-        <div class="card-content">
-          <h2 class="card-title">صورة الهوية</h2>
-          <img [src]="room.picturePath" alt="{{ room.Name }}" class="card-image">
-          <h2 class="card-title">صورة إيصال التأكيد</h2>
-          <img [src]="room.PicturePath" alt="{{ room.Name }}" class="card-image">
-          <h2 class="card-title">{{ room.Name }}</h2>
-          <p><strong>Email:</strong> {{ room.Email }}</p>
-          <p><strong>Phone:</strong> {{ room.PhoneNumber }}</p>
-          <p><strong>From:</strong> {{ room.DateFrom }}</p>
-          <p><strong>To:</strong> {{ room.DateTo }}</p>
-          <div *ngIf="room.placeID">
-            <p><strong>Place:</strong> {{ room.place?.Name || 'N/A' }}</p>
-            <p><strong>Description:</strong> {{ room.place?.Description || 'N/A' }}</p>
-            <p><strong>Price/Night:</strong> ${{ room.place?.PriceForNight || 'N/A' }}</p>
+    <div class="total-price-container mt-4">
+        <div id="cardContainer">
+          <div *ngFor="let room of rooms" class="card">
+            <div class="card-content">
+              <h2 class="card-title">صورة الهوية</h2>
+              <img [src]="room.BookImg" alt="{{ room.Name }}" class="card-image">
+              <h2 class="card-title">صورة إيصال التأكيد</h2>
+              <img [src]="room.Confirmimage" alt="{{ room.Name }}" class="card-image">
+              <h2 class="card-title">{{ room.BookName }}</h2>
+              <p><strong>Email:</strong> {{ room.BookEmail }}</p>
+              <p><strong>Phone:</strong> {{ room.BookPhone }}</p>
+              <p><strong>From:</strong> {{ room.BookFrom }}</p>
+              <p><strong>To:</strong> {{ room.BookTo }}</p>
+              <div *ngIf="room.placeID">
+                <p><strong>Place:</strong> {{ room.placeName || 'N/A' }}</p>
+                <p><strong>Description:</strong> {{ room.placeDesc || 'N/A' }}</p>
+                <p><strong>Price/Night:</strong> ${{ room.placePrice || 'N/A' }}</p>
+              </div>
+       
+                <button class="delete-button" (click)="deleteRoom(room.BookId)">Delete</button>
+    
+    
+            </div>
           </div>
-          <button class="delete-button" (click)="deleteRoom(room.Id)">Delete</button>
         </div>
       </div>
-    </div>
-  </div>
-</ng-template>
+    </ng-template>

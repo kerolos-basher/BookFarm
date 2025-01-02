@@ -16,7 +16,7 @@ namespace BookFarm.Controllers
       _context = context;
     }
     [HttpGet("TotalPrice")]
-    public async Task<IActionResult> TotalPrice(int PlaceID, string FromDate, string ToDate)
+    public IActionResult TotalPrice(int PlaceID, string FromDate, string ToDate)
     {
       try
       {
@@ -42,7 +42,7 @@ namespace BookFarm.Controllers
         }
 
         // Retrieve the place from the database
-        var place = await _context.places.FirstOrDefaultAsync(p => p.Id == PlaceID);
+        var place = _context.places.FirstOrDefault(p => p.Id == PlaceID);
         if (place == null)
         {
           return NotFound("Place not found.");
@@ -81,9 +81,13 @@ namespace BookFarm.Controllers
             totalCost += dailyPrice;
           }
         }
-
+        var re = $"{totalCost.ToString()} AED for {totalDays} Days";
         // Return the total cost
-        return Ok(totalCost.ToString());
+      
+        return Ok(new
+        {
+          price = re
+        });
       }
       catch (Exception ex)
       {
