@@ -191,16 +191,13 @@ export class BookComponent implements OnInit  {
       this.bookService.postBooking(postData).subscribe(
         
         (response) => {
-          if(response){
-            this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
-            //alert('تم الحجز بنجاح!');
-            //location.reload();
-          }
-
+          this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
+          //alert('تم الحجز بنجاح!');
+         
         },
         (error) => {
           console.error('Error:', error);
-          //this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
+          this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
 
           this.showPopup('⚠','خطاء في الحجز يرجي اعادة المحاولة ','red');
 
