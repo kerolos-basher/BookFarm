@@ -22,6 +22,11 @@ export class BookService {
     this.httpClient
       .get<Place[]>(`${this.baseApi}/Places`)
       .subscribe((data) => {
+        data.map(item=>({
+          ...item,
+          imgUrl :`${environment.ImgUrl}${item.imgUrl}`
+
+        }))
         this.places.set(data);
       });
   }
