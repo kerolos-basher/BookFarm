@@ -52,7 +52,7 @@ export class BookComponent implements OnInit  {
   disabledMonths: number[] = [];
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
-  constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
+  constructor(private Router:Router,private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
   
    
     this.bookingForm = this.fb.group({
@@ -203,7 +203,7 @@ export class BookComponent implements OnInit  {
         (response) => {
           this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
           //alert('تم الحجز بنجاح!');
-          this.router.navigate(['/ConfirmBook']);
+          this.Router.navigate(['/ConfirmBook']);
         },
         (error) => {
           console.error('Error:', error);

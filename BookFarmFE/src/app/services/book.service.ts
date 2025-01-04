@@ -54,9 +54,7 @@ getTotalPrice(fromDate: string, toDate: string): void {
       //this.TotalPrice .set(data);// Update the signal with the fetched dates
 
       // Further processing, if needed
-    },
-    );
-}
+    }
     
 })};
 clearTotalPrice(): void {

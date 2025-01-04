@@ -203,7 +203,7 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
     this.selectedEndDate = null;
     this.validationMessage = null;
   }
-  
+
   // Example: Trigger reset when a related field changes
   onRelatedFieldChange(): void {
     this.resetDatePickersAutomatically();
