@@ -44,15 +44,18 @@ export class AdminComponent implements OnInit {
       next: (data) => {
         // this.rooms = data;
         this.rooms = data.map((room) => ({
-          id: room.Id, // Extracting specific properties
-          Name: room.Name,
-          Email: room.Email,
-          PhoneNumber: room.PhoneNumber,
-          DateFrom: room.DateFrom,
-          DateTo: room.DateTo,
-          price: room.place?.PriceForNight || 0, // Default value if price is missing
-          description: room.place?.Description || 'No description available',
-          picturePath: 'https://api.liwa.my-alphatech.com'+ room.PicturePath , // Fallback image
+          BookId: room.BookId, // Extracting specific properties
+          BookName: room.BookName,
+          BookEmail: room.BookEmail,
+          BookPhone: room.BookPhone,
+          BookDateFrom: room.BookDateFrom,
+          bookDateTo: room.bookDateTo,
+          bookImage: environment.ImgUrl+ room.bookImage , // Fallback image
+          confirmImage: environment.ImgUrl+ room.confirmImage,
+          placeName : room.placeName,
+          placeDescription : room.placeDescription,
+          TotaPrice:room.TotaPrice
+          
         }));
       },
       error: (err) => {
@@ -64,9 +67,10 @@ export class AdminComponent implements OnInit {
 
   deleteRoom(roomId: number): void {
     debugger
-    this.http.delete(environment.apiUrl+`/DeleteBook/${roomId}`).subscribe({
+    this.http.get(environment.apiUrl+`/DeleteBook/${roomId}`).subscribe({
       next: () => {
         this.rooms = this.rooms.filter((room) => room.Id !== roomId);
+        this.fetchRooms();
       //  alert('Room deleted successfully.');
       },
       error: (err) => {
