@@ -64,8 +64,11 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
       this.resetDatePickersAutomatically();
     });
    console.log(this.unavailableDates);
+   this.dateService.reset$.subscribe(() => {
+    this.resetDatePickersAutomatically();
+  });
   }
- 
+  
   // onDateChange(event: any): void {
   //   const selectedDate = event.value;
 
@@ -98,7 +101,8 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
   //     }
   //   }
 
-  onDateChange(type: 'startDate' | 'endDate' , event: any): void {
+  onDateChange(type: 'startDate' | 'endDate', event: any): void {
+    
     if (type === 'startDate') {
       this.selectedStartDate = event.value;
       this.dateService.globalStartdate=event.value;
@@ -194,17 +198,14 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
       horizontalPosition: 'center', // Position: 'start' | 'center' | 'end' | 'left' | 'right'
     });
   }
-
-
   resetDatePickersAutomatically(): void {
     this.selectedStartDate = null;
     this.selectedEndDate = null;
     this.validationMessage = null;
   }
-
+  
   // Example: Trigger reset when a related field changes
   onRelatedFieldChange(): void {
     this.resetDatePickersAutomatically();
   }
-  
 }

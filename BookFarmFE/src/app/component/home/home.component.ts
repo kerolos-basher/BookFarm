@@ -67,6 +67,7 @@ export class HomeComponent implements OnInit{
           ...Item,
           ImageUrl:`${environment.ImgUrl}${Item.ImageUrl}`
         }))
+        //.cards = data.slice(1);
       },
       (error) => {
         console.error('Error fetching cards', error);

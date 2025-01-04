@@ -406,3 +406,5 @@ FodyWeavers.xsd
 /.gitignore
 /.gitignore
 /.gitignore
+/BookFarmFE/src/app/component/admin/admin.component.html
+/BookFarmFE/src/app/component/admin/admin.component.ts

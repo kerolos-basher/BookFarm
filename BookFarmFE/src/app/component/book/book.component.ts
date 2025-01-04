@@ -26,7 +26,8 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     CommonModule,
     DateRangePickerComponent,
-    PopUpComponent
+    PopUpComponent,
+    
 
   ],
   templateUrl: './book.Component.html',
@@ -44,13 +45,14 @@ export class BookComponent implements OnInit  {
   selectedEndDate: string | null = null;
   isPlaceSelected: boolean = false;
 
+
   bookingForm: FormGroup;
   selectedFile: File | null = null;
   disabledDays: number[] = []; 
   disabledMonths: number[] = [];
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
-  constructor(private router:Router,private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
+  constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
   
    
     this.bookingForm = this.fb.group({
@@ -110,7 +112,6 @@ export class BookComponent implements OnInit  {
       this.bookService.dates().forEach(element => {
         this.unavailableDates.push (new Date (element))
       });
-      
       // [new Date(2024, 11, 25), new Date(2024, 11, 31)]
       // const days = this.bookService.days();
       // const months = this.bookService.months();
@@ -243,8 +244,6 @@ export class BookComponent implements OnInit  {
       !this.disabledWeekdays.includes(weekday) // Allow only enabled weekdays
     );
   }
-
-  
 }
   // dateFilter = (date: Date | null): boolean => {
   //   if (!date) return false;
@@ -260,4 +259,3 @@ export class BookComponent implements OnInit  {
   //   );
   // };
 // }
-

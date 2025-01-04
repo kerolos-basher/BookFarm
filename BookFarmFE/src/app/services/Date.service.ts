@@ -1,9 +1,8 @@
-import { Injectable, ViewChild } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { Subject } from 'rxjs';
-import { DateRangePickerComponent } from '../component/date-range-picker/date-range-picker.component';
 
 export interface CardObject {
     Id: number;
@@ -29,5 +28,7 @@ export class DateService {
       this.resetSubject.next();
     }
 
+    
 
+    
   }
