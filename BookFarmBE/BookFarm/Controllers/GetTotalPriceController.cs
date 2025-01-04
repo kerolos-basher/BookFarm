@@ -83,7 +83,7 @@ namespace BookFarm.Controllers
         }
 
         // Return the total cost
-        return Ok(totalCost.ToString());
+        return Ok(totalCost.ToString()+" AED "+"   4  5 ");
       }
       catch (Exception ex)
       {

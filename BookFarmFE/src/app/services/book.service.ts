@@ -46,19 +46,26 @@ getDates(id: number): void {
 
 getTotalPrice(fromDate: string, toDate: string): void {
   const url = environment.apiUrl+`/GetTotalPrice/TotalPrice?PlaceID=${this.currentSelectedPlace()}&FromDate=${fromDate}&ToDate=${toDate}`;
-
-  this.httpClient.get<string>(url).subscribe({
+ 
+  this.httpClient.get<{price: string}>(url).subscribe({
     next: (data) => {
+     this.TotalPrice.set(data.price);
      
-      this.TotalPrice .set(data);// Update the signal with the fetched dates
+      //this.TotalPrice .set(data);// Update the signal with the fetched dates
 
       // Further processing, if needed
     },
+   
     error: (err) => {
       return '';
       console.error('Error fetching data:', err);
     }
+
+    
   });
+}
+clearTotalPrice(): void {
+  this.TotalPrice.set(''); // Clear the total price
 }
 
   postBooking(data: any) {

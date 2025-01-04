@@ -37,7 +37,7 @@ namespace BookFarm.Controllers
                            {
                              //just put all the data that you need here
                              BookId = book.Id,
-                             BookName = book.Name,
+                             BookN  ame = book.Name,
                              BookEmail = book.Email,
                              ConfirmCode = book.ConfirmCode ?? "No Code",
                              confirmimage = subCode.PicturePath ?? "",

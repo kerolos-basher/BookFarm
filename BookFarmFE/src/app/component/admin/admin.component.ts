@@ -52,7 +52,7 @@ export class AdminComponent implements OnInit {
           DateTo: room.DateTo,
           price: room.place?.PriceForNight || 0, // Default value if price is missing
           description: room.place?.Description || 'No description available',
-          picturePath: 'https://api.liwa.my-alphatech.com'+ room.PicturePath , // Fallback image
+          picturePath:environment.ImgUrl+ room.PicturePath , // Fallback image
         }));
       },
       error: (err) => {
@@ -63,11 +63,12 @@ export class AdminComponent implements OnInit {
   }
 
   deleteRoom(roomId: number): void {
-    debugger
+    
     this.http.delete(environment.apiUrl+`/DeleteBook/${roomId}`).subscribe({
       next: () => {
         this.rooms = this.rooms.filter((room) => room.Id !== roomId);
-      //  alert('Room deleted successfully.');
+      //alert('Room deleted successfully.');
+      this.fetchRooms();
       },
       error: (err) => {
         console.error(`Error deleting room with ID ${roomId}:`, err);

@@ -1,4 +1,4 @@
- 
+<!--  
 <mat-form-field appearance="outline" class="date-field" id="date-field1">
   <mat-label>Select Start Date</mat-label>
   <input
@@ -32,13 +32,56 @@
     />
     <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
     <mat-datepicker #endPicker></mat-datepicker>
-  </mat-form-field>
+  </mat-form-field> -->
   
   <!-- <div class="selected-date">
     <p>End Date: {{ endDate ? (endDate | date) : 'Not Selected' }}</p>
   </div> -->
-  
+<!--   
   <div *ngIf="validationMessage" class="error-message">
     <p>{{ validationMessage }}</p>
   </div> 
+   -->
+
+
+
+   <div>
+    <mat-form-field appearance="outline" class="date-field" id="date-field1">
+      <mat-label>Select Start Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="startPicker"
+        (dateChange)="onDateChange('startDate', $event)"
+        [min]="minDate"
+        [max]="maxDate"
+        [matDatepickerFilter]="isDateAvailable"
+        placeholder="Select Start Date"
+        [value]="selectedStartDate"
+        readonly
+      />
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline" class="date-field" id="date-field2">
+      <mat-label>Select End Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="endPicker"
+        (dateChange)="onDateChange('endDate', $event)"
+        [min]="selectedStartDate"
+        [max]="maxDate"
+        [matDatepickerFilter]="isDateAvailable"
+        placeholder="Select End Date"
+        [value]="selectedEndDate"
+        readonly
+      />
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+  
+    <div *ngIf="validationMessage" class="error-message">
+      <p>{{ validationMessage }}</p>
+    </div>
+  </div>
   

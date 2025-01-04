@@ -59,39 +59,11 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
   ngOnInit(): void {
     
    console.log(this.unavailableDates);
+   this.dateService.reset$.subscribe(() => {
+    this.resetDatePickersAutomatically();
+  });
   }
   
-  // onDateChange(event: any): void {
-  //   const selectedDate = event.value;
-
-  //   if (this.isSelectingStartDate) {
-  //     this.startDate = selectedDate;
-  //     this.endDate = null; // Reset end date when start date changes
-  //     this.validationMessage = null; // Reset validation message
-  //   } else {
-  //     if (this.startDate && selectedDate >= this.startDate) {
-  //       this.endDate = selectedDate;
-  //       this.validateDateRange(this.startDate, this.endDate!);
-  //     } else {
-  //       this.validationMessage = 'End date must be after or equal to the start date.';
-  //     }
-  //   }
-
-  //   this.isSelectingStartDate = !this.isSelectingStartDate;
-  // }
-
-  // onDateChange(event: any): void {
-  //   const selectedDate = event.value;
-
-  //   if (this.isSelectingStartDate) {
-  //     this.startDate = selectedDate;
-  //     // Reset end date when start date changes
-  //     this.validationMessage = null; // Reset validation message
-  //   } 
-  //      else {
-  //       this.validationMessage = 'End date must be after or equal to the start date.';
-  //     }
-  //   }
 
   onDateChange(type: 'startDate' | 'endDate', event: any): void {
     
@@ -189,5 +161,17 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
       verticalPosition: 'bottom', // Position: 'top' | 'bottom'
       horizontalPosition: 'center', // Position: 'start' | 'center' | 'end' | 'left' | 'right'
     });
+  }
+
+
+  resetDatePickersAutomatically(): void {
+    this.selectedStartDate = null;
+    this.selectedEndDate = null;
+    this.validationMessage = null;
+  }
+
+  // Example: Trigger reset when a related field changes
+  onRelatedFieldChange(): void {
+    this.resetDatePickersAutomatically();
   }
 }

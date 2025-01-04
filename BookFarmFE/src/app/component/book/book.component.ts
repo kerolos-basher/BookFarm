@@ -13,7 +13,6 @@ import { environment } from '../../../environments/environment.development';
 import { DateService } from '../../services/Date.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../pop-up/pop-up.component';
-
 @Component({
   selector: 'app-book',
   standalone: true,
@@ -25,7 +24,8 @@ import { PopUpComponent } from '../pop-up/pop-up.component';
     ReactiveFormsModule,
     CommonModule,
     DateRangePickerComponent,
-    PopUpComponent
+    PopUpComponent,
+    
 
   ],
   templateUrl: './book.Component.html',
@@ -41,6 +41,8 @@ export class BookComponent implements OnInit  {
   base64String = ""
   selectedStartDate:string|null=null;
   selectedEndDate: string | null = null;
+  isPlaceSelected: boolean = false;
+
 
   bookingForm: FormGroup;
   selectedFile: File | null = null;
@@ -48,7 +50,7 @@ export class BookComponent implements OnInit  {
   disabledMonths: number[] = [];
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
-  constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
+  constructor( private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
   
    
     this.bookingForm = this.fb.group({
@@ -94,6 +96,12 @@ export class BookComponent implements OnInit  {
     
 
   onPlaceSelected(): void {
+    debugger
+    this.isPlaceSelected = true;
+    this.bookService.clearTotalPrice();
+    this.dateService.globalEnddate ="";
+    this.dateService.globalStartdate ="";
+    this.dateService.triggerReset();
     
     const selectedPlace = this.bookingForm.get('dropdown')?.value;
     this.bookService.getDates(selectedPlace);
