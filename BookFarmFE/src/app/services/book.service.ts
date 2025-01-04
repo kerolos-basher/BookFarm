@@ -45,6 +45,7 @@ getDates(id: number): void {
  TotalPrice = signal<string>(''); // Assuming the API returns an array of strings
 
 getTotalPrice(fromDate: string, toDate: string): void {
+  
   const url = environment.apiUrl+`/GetTotalPrice/TotalPrice?PlaceID=${this.currentSelectedPlace()}&FromDate=${fromDate}&ToDate=${toDate}`;
  
   this.httpClient.get<{price: string}>(url).subscribe({
@@ -54,16 +55,23 @@ getTotalPrice(fromDate: string, toDate: string): void {
       //this.TotalPrice .set(data);// Update the signal with the fetched dates
 
       // Further processing, if needed
+    },
+   
+    error: (err) => {
+      return '';
+      console.error('Error fetching data:', err);
     }
+
     
-})};
+  });
+}
 clearTotalPrice(): void {
   this.TotalPrice.set(''); // Clear the total price
 }
 
 
   postBooking(data: any) {
-    debugger
+    
     const apiUrl = `${this.baseApi}/BookPost/AddUser`; // Replace with your actual API endpoint
     return this.httpClient.post(apiUrl, data);
   }
