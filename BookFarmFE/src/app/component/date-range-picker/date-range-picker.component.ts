@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import{DateService}from '../../services/Date.service'
 import { BookService } from '../../services/book.service';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-date-range-picker',
@@ -28,6 +29,7 @@ import { DatePipe } from '@angular/common';
   
 })
 export class DateRangePickerComponent implements OnInit{
+  datepickerService: any;
   @Input() set unavailableDates(dates: Date[]) {
   this._unavailableDates = dates.map(
     (date) => new Date(date.getFullYear(), date.getMonth(), date.getDate()) // Strip time
@@ -57,10 +59,13 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
   })
 }
   ngOnInit(): void {
-    
+    debugger
+    this.dateService.reset$.subscribe(() => {
+      this.resetDatePickersAutomatically();
+    });
    console.log(this.unavailableDates);
   }
-  
+ 
   // onDateChange(event: any): void {
   //   const selectedDate = event.value;
 
@@ -93,8 +98,7 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
   //     }
   //   }
 
-  onDateChange(type: 'startDate' | 'endDate', event: any): void {
-    
+  onDateChange(type: 'startDate' | 'endDate' , event: any): void {
     if (type === 'startDate') {
       this.selectedStartDate = event.value;
       this.dateService.globalStartdate=event.value;
@@ -189,6 +193,18 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
       verticalPosition: 'bottom', // Position: 'top' | 'bottom'
       horizontalPosition: 'center', // Position: 'start' | 'center' | 'end' | 'left' | 'right'
     });
+  }
+
+
+  resetDatePickersAutomatically(): void {
+    this.selectedStartDate = null;
+    this.selectedEndDate = null;
+    this.validationMessage = null;
+  }
+
+  // Example: Trigger reset when a related field changes
+  onRelatedFieldChange(): void {
+    this.resetDatePickersAutomatically();
   }
   
 }

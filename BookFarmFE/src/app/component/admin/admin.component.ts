@@ -71,6 +71,7 @@ export class AdminComponent implements OnInit {
     this.http.get(environment.apiUrl+`/DeleteBook/${roomId}`).subscribe({
       next: () => {
         this.rooms = this.rooms.filter((room) => room.Id !== roomId);
+        this.fetchRooms();
       //  alert('Room deleted successfully.');
       },
       error: (err) => {

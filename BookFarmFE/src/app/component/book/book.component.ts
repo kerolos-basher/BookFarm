@@ -13,6 +13,7 @@ import { environment } from '../../../environments/environment.development';
 import { DateService } from '../../services/Date.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../pop-up/pop-up.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book',
@@ -49,7 +50,7 @@ export class BookComponent implements OnInit  {
   disabledMonths: number[] = [];
   disabledYears: number[] = []; // Example: Disable the 15th of every month
   disabledWeekdays: number[] = [];
-  constructor(private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
+  constructor(private router:Router,private fb: FormBuilder,private http: HttpClient,public dateService:DateService,private dialog:MatDialog ,public bookService: BookService) {
   
    
     this.bookingForm = this.fb.group({
@@ -95,7 +96,13 @@ export class BookComponent implements OnInit  {
     
 
   onPlaceSelected(): void {
+    debugger
     this.isPlaceSelected = true;
+    this.bookService.clearTotalPrice();
+    this.dateService.globalEnddate ="";
+    this.dateService.globalStartdate ="";
+    this.dateService.triggerReset();
+    
     const selectedPlace = this.bookingForm.get('dropdown')?.value;
     this.bookService.getDates(selectedPlace);
     this.bookService.currentSelectedPlace.set(selectedPlace);   
@@ -152,8 +159,8 @@ export class BookComponent implements OnInit  {
   }
   onDateRangeSelected(): void {
     
-    this.selectedStartDate = this.dateService.globalStartdate;
-    this.selectedEndDate =  this.dateService.globalStartdate;
+    //this.selectedStartDate = this.dateService.globalStartdate;
+   // this.selectedEndDate =  this.dateService.globalStartdate;
    
   }
  
@@ -166,7 +173,7 @@ export class BookComponent implements OnInit  {
    {
     //this.dialog.open();
     this.showPopup('⚠','خطاء في البيانات يرجى التأكيد ','orange');
-
+ 
     
    }
     // if (this.bookingForm.invalid || !this.selectedFile) {
@@ -195,11 +202,11 @@ export class BookComponent implements OnInit  {
         (response) => {
           this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
           //alert('تم الحجز بنجاح!');
-         
+          this.router.navigate(['/ConfirmBook']);
         },
         (error) => {
           console.error('Error:', error);
-          this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
+          //this.showPopup('✔', ' تم الحجز بنجاح! لقد تم إرسال كود تأكيد علي بريدك الإلكترونى','green');
 
           this.showPopup('⚠','خطاء في الحجز يرجي اعادة المحاولة ','red');
 

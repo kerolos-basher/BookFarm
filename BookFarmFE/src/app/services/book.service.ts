@@ -60,10 +60,12 @@ getTotalPrice(fromDate: string, toDate: string): void {
     },
     );
 }
-
+clearTotalPrice(): void {
+  this.TotalPrice.set(''); // Clear the total price
+}
 
   postBooking(data: any) {
-    
+    debugger
     const apiUrl = `${this.baseApi}/BookPost/AddUser`; // Replace with your actual API endpoint
     return this.httpClient.post(apiUrl, data);
   }
