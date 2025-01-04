@@ -2,7 +2,11 @@ using BookFarm.Controllers.Request;
 using BookFarm.Data;
 using BookFarm.Entities;
 using BookFarm.Entities.mail;
+using BookFarm.Migrations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using System.Net;
 using System.Text;
 
 namespace BookFarm.Controllers
@@ -41,7 +45,7 @@ namespace BookFarm.Controllers
       // Generate a unique file name using a GUID
       string fileName = $"{Guid.NewGuid()}.{extension}";
       string fullPath = Path.Combine(uploadDirectory, fileName);
-      string returnPath = Path.Combine(uploadDirectory.Replace(".",""), fileName);
+      string returnPath = Path.Combine(uploadDirectory.Replace(".", ""), fileName);
 
       // Write the file to the directory
       System.IO.File.WriteAllBytes(fullPath, imageBytes);
@@ -82,14 +86,97 @@ namespace BookFarm.Controllers
 
     public async Task<IActionResult> AddUser([FromBody] BookFarmRequest request)
     {
+
+      //var BookFarms = await _context.books.Where(b => b.DateFrom).ToListAsync();
+      //var confirmationCodes = await _context.ConfirmBook.ToListAsync();
+
+
       if (request == null)
       {
         return BadRequest("Invalid data.");
       }
       try
       {
+
+        // Parse input dates
+        // Define multiple date formats to handle inconsistencies
+        string[] dateFormats = new[] {
+              "yyyy-M-dTHH:mm:ss.fffZ",  // Single-digit month/day with milliseconds
+              "yyyy-MM-ddTHH:mm:ss.fffZ", // Double-digit month/day with milliseconds
+              "yyyy-M-dTHH:mm:ssZ",      // Single-digit month/day without milliseconds
+              "yyyy-M-ddTHH:mm:ssZ",      // Single-digit month/day without milliseconds
+              "yyyy-MM-dTHH:mm:ssZ",      // Single-digit month/day without milliseconds
+              "yyyy-MM-ddTHH:mm:ssZ",    // Double-digit month/day without milliseconds
+              "yyyy-M-d",                // Single-digit month/day, no time
+              "yyyy-MM-dd"               // Double-digit month/day, no time
+          };
+
+        var culture = CultureInfo.InvariantCulture;
+
+        if (!DateTime.TryParseExact(request.DateFrom?.Trim(), dateFormats, culture, DateTimeStyles.AssumeUniversal, out DateTime parsedFromDate) ||
+            !DateTime.TryParseExact(request.DateTo?.Trim(), dateFormats, culture, DateTimeStyles.AssumeUniversal, out DateTime parsedToDate))
+        {
+          return BadRequest("Invalid date format. Expected format: yyyy-MM-ddTHH:mm:ss.fffZ.");
+        }
+
+        // Retrieve and parse data from the database
+        var BookFarms = await _context.books.ToListAsync();
+        var confirmationCodes = await _context.ConfirmBook.ToListAsync();
+        var Places = await _context.places.ToListAsync();
+
+        // Perform the inner join
+        var innerJoinResult = (from book in BookFarms
+                               join code in confirmationCodes
+                               on book.ConfirmCode equals code.ConfirmCode
+                               select new
+                               {
+                                 BookId = book.Id
+                               }).ToList();
+
+        // Filter BookFarms based on the inner join result
+        var filteredBookFarms = BookFarms.Where(b => innerJoinResult.Any(r => r.BookId == b.Id)).ToList();
+
         
-        var path = UploadImage(request.Picture,".\\uploads");
+        foreach (var booking in filteredBookFarms)
+        {
+          // Check if the PlaceID matches
+          if (booking.placeID.ToString() == request.PlaceID)
+          {
+            // Attempt to parse the dates
+            if (DateTime.TryParseExact(booking.DateFrom?.Trim(), dateFormats, culture, DateTimeStyles.AssumeUniversal, out DateTime dbStartDate) &&
+                DateTime.TryParseExact(booking.DateTo?.Trim(), dateFormats, culture, DateTimeStyles.AssumeUniversal, out DateTime dbEndDate))
+            {
+              // Evaluate conflict conditions
+              if (
+                  (dbStartDate <= parsedFromDate && dbEndDate >= parsedFromDate) || // New booking starts in existing booking
+                  (dbStartDate <= parsedToDate && dbEndDate >= parsedToDate) ||   // New booking ends in existing booking
+                  (dbStartDate >= parsedFromDate && dbEndDate <= parsedToDate) || // New booking fully contains existing booking
+                  (dbStartDate <= parsedFromDate && dbEndDate >= parsedToDate)    // Existing booking fully contains new booking
+              )
+              {
+                return NotFound($"Conflict detected: Booking ID {booking.Id} conflicts with the new booking.");
+              }
+            }
+            else
+            {
+              // Log invalid date format for debugging
+              Console.WriteLine($"Failed to parse dates for Booking ID: {booking.Id}, DateFrom: {booking.DateFrom}, DateTo: {booking.DateTo}");
+            }
+          }
+        }
+
+
+        
+
+
+
+
+
+        //if ()
+        //{
+
+        //}
+        var path = UploadImage(request.Picture, ".\\uploads");
         //email to the user
         var user_body = new StringBuilder();
         user_body.AppendLine("Your confirmation code is : " + request.ConfirmCode);
@@ -99,32 +186,32 @@ namespace BookFarm.Controllers
         user_body.AppendLine("Phone : +971507155511");
         user_body.AppendLine("Email : Almarri.hassan@gmail.com");
         var r1 = await _emailService.SendEmailAsync(request.Email, "Villa Booking Details", user_body.ToString(), false);
-      
-      var bookAFarm = new BookAFarm
-      {
-        Name = request.Name,
-        Email = request.Email,
-        PhoneNumber = request.PhoneNumber,
-        PicturePath = path,
-        DateFrom = request.DateFrom,
-        DateTo = request.DateTo,
-        ConfirmCode = request.ConfirmCode,
-        placeID = string.IsNullOrEmpty(request.PlaceID) ? (int?)null : int.Parse(request.PlaceID)
-      };
-      _context.books.Add(bookAFarm);
-      _context.SaveChanges();
 
-      //email to the admin
-      var admin_body = new StringBuilder();
-      admin_body.AppendLine("book with confirmation code : " + request.ConfirmCode);
-      admin_body.AppendLine("for : " + request.Name);
-      admin_body.AppendLine("phone number : " + request.PhoneNumber);
-      admin_body.AppendLine("Email : " + request.Email);
-      admin_body.AppendLine("Villa number : " + request.PlaceID);
-      admin_body.AppendLine("from date : " + request.DateFrom);
-      admin_body.AppendLine("to date : " + request.DateTo);
-      admin_body.AppendLine($"EID image link : https://api.liwavillas.com{path}");
-      var r = await _emailService.SendEmailAsync("Almarri.hassan@gmail.com", "Villa Booking Details", admin_body.ToString(), false);
+        var bookAFarm = new BookAFarm
+        {
+          Name = request.Name,
+          Email = request.Email,
+          PhoneNumber = request.PhoneNumber,
+          PicturePath = path,
+          DateFrom = request.DateFrom,
+          DateTo = request.DateTo,
+          ConfirmCode = request.ConfirmCode,
+          placeID = string.IsNullOrEmpty(request.PlaceID) ? (int?)null : int.Parse(request.PlaceID)
+        };
+        _context.books.Add(bookAFarm);
+        _context.SaveChanges();
+
+        //email to the admin
+        var admin_body = new StringBuilder();
+        admin_body.AppendLine("book with confirmation code : " + request.ConfirmCode);
+        admin_body.AppendLine("for : " + request.Name);
+        admin_body.AppendLine("phone number : " + request.PhoneNumber);
+        admin_body.AppendLine("Email : " + request.Email);
+        admin_body.AppendLine("Villa number : " + request.PlaceID);
+        admin_body.AppendLine("from date : " + request.DateFrom);
+        admin_body.AppendLine("to date : " + request.DateTo);
+        admin_body.AppendLine($"EID image link : https://api.liwavillas.com{path}");
+        var r = await _emailService.SendEmailAsync("Almarri.hassan@gmail.com", "Villa Booking Details", admin_body.ToString(), false);
       }
       catch (Exception ex)
       {
