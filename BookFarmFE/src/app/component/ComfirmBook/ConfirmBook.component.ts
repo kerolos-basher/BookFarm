@@ -11,6 +11,8 @@ import { RouterModule } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../pop-up/pop-up.component';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-confirm-book',
   standalone: true,
@@ -37,7 +39,7 @@ export class ConfirmBookComponent implements OnInit {
   showNotFoundMessage = false;
   showErrorMessage = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient ,private dialog:MatDialog,public confirmServes: ConfirmService) {
+  constructor(private Router:Router, private fb: FormBuilder, private http: HttpClient ,private dialog:MatDialog,public confirmServes: ConfirmService) {
     this.confirmCodeForm = this.fb.group({
       confirmCode: ['', Validators.required],
     })
@@ -121,7 +123,8 @@ export class ConfirmBookComponent implements OnInit {
   
     this.confirmServes.postBooking(postData).subscribe(
       (response) => {
-        this.showPopup('✔', 'تم الحجز تأكيد الحجز سيتم التواصل معكم في اقرب وقت','green');
+        this.Router.navigate(['']);
+        this.showPopup('✔', 'تم تأكيد الحجز سيتم التواصل معكم في اقرب وقت','green');
        
       },
       (error) => {

@@ -83,15 +83,11 @@ namespace BookFarm.Controllers
         }
         var re = $"{totalCost.ToString()} AED for {totalDays} Days";
         // Return the total cost
-<<<<<<< HEAD
-        return Ok(totalCost.ToString()+" AED "+"   4  5 ");
-=======
-      
+
         return Ok(new
         {
           price = re
         });
->>>>>>> 4b4a254010b8e7c43400d7b57d7c72d1b636d25a
       }
       catch (Exception ex)
       {
