@@ -1,4 +1,4 @@
-﻿using BookFarm.Data;
+using BookFarm.Data;
 using BookFarm.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

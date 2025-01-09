@@ -29,11 +29,9 @@
               <p><strong>Phone:</strong> {{ room.BookPhone }}</p>
               <p><strong>From:</strong> {{ room.BookFrom }}</p>
               <p><strong>To:</strong> {{ room.BookTo }}</p>
-              <div *ngIf="room.placeID">
-                <p><strong>Place:</strong> {{ room.placeName || 'N/A' }}</p>
-                <p><strong>Description:</strong> {{ room.placeDesc || 'N/A' }}</p>
-                <p><strong>Price/Night:</strong> ${{ room.placePrice || 'N/A' }}</p>
-              </div>
+                <p><strong>Place:</strong> {{ room.PlaceName || 'N/A' }}</p>
+                <p><strong>Description:</strong> {{ room.PlaceDesc || 'N/A' }}</p>
+                <p><strong>Total Price:</strong> ${{ room.TotalPrice || 'N/A' }}</p>
        
                 <button class="delete-button" (click)="deleteRoom(room.BookId)">Delete</button>
     

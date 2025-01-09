@@ -101,8 +101,8 @@ export class BookComponent implements OnInit  {
     debugger
     this.isPlaceSelected = true;
     this.bookService.clearTotalPrice();
-    this.dateService.globalEnddate ="";
-    this.dateService.globalStartdate ="";
+    this.dateService.globalEnddate =null;
+    this.dateService.globalStartdate =null;
     this.dateService.triggerReset();
     
     const selectedPlace = this.bookingForm.get('dropdown')?.value;
@@ -170,7 +170,7 @@ export class BookComponent implements OnInit  {
   };
   onSubmit(): void {
     
-   if(this.dateService.globalStartdate==''||this.dateService.globalEnddate=='')
+   if(this.dateService.globalStartdate==null||this.dateService.globalEnddate==null)
    {
     //this.dialog.open();
     this.showPopup('⚠','خطاء في البيانات يرجى التأكيد ','orange');

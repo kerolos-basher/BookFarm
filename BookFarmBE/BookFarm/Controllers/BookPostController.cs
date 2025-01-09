@@ -213,7 +213,7 @@ namespace BookFarm.Controllers
         admin_body.AppendLine($"EID image link : https://api.liwavillas.com{path}");
         var r = await _emailService.SendEmailAsync("Almarri.hassan@gmail.com", "Villa Booking Details", admin_body.ToString(), false);
       }
-      catch (Exception ex)
+      catch (Exception)
       {
         return NotFound();
       }

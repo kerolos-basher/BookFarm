@@ -104,11 +104,11 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
   onDateChange(type: 'startDate' | 'endDate', event: any): void {
     
     if (type === 'startDate') {
-      this.selectedStartDate = event.value;
-      this.dateService.globalStartdate=event.value;
+      this.selectedStartDate =  event.value;
+      this.dateService.globalStartdate= event.value;
       if (!this.isDateAvailable(this.selectedStartDate))
       {
-        this.dateService.globalStartdate =''
+        this.dateService.globalStartdate =null
       }
       console.log('Selected Start Date:', this.selectedStartDate);
     } else if (type === 'endDate') {
@@ -120,11 +120,11 @@ constructor(private datePipe: DatePipe,private snackBar: MatSnackBar ,public dat
         this.bookService.getTotalPrice(startDates!.toString(),EndDate!.toString());
                
     
-      this.validateDateRange(new Date(this.dateService.globalStartdate),event.value)
+      this.validateDateRange(new Date(this.dateService.globalStartdate!),event.value)
 
       if (!this.isDateAvailable(this.selectedEndDate))
         {
-          this.dateService.globalEnddate =''
+          this.dateService.globalEnddate = null
         }
       console.log('Selected End Date:', this.selectedEndDate);
     }

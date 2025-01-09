@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System;
+using System.Globalization;
 
 namespace BookFarm.Controllers
 {
@@ -84,6 +85,9 @@ namespace BookFarm.Controllers
       var BookFarms = await _context.books.ToListAsync();
       var confirmationCodes = await _context.ConfirmBook.ToListAsync();
       var places = await _context.places.ToListAsync();
+      GetTotalPriceController getTotal = new GetTotalPriceController(_context);
+      Place p = new Place();
+
 
       var leftJoinResult = from book in BookFarms
                            join code in confirmationCodes
@@ -106,13 +110,14 @@ namespace BookFarm.Controllers
                              PlaceID = subPlace?.Id ?? 0, // Default to 0 if null
                              PlaceName = subPlace?.Name ?? "Unknown Place",
                              PlaceDesc = subPlace?.Description ?? "No Description",
-                             PlacePrice = subPlace?.PriceForNight ?? 0 // Default to 0 if null
+                             PlacePrice = subPlace?.PriceForNight ?? 0, // Default to 0 if null
+                             TotalPrice = p.GetTotalPrice(subPlace.Id, book.DateFrom, book.DateTo ,subPlace.PriceForNight).ToString() ??"Not Found",
                            };
 
       return Ok(leftJoinResult);
 
 
-      return Ok(leftJoinResult);
+     
         }
         [HttpGet("{id}")]
        
@@ -128,7 +133,16 @@ namespace BookFarm.Controllers
 
 
 
-        
 
-    }
+  
+  }
+
+
+
+
+
+
+
+
+
 }

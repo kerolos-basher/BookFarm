@@ -5,11 +5,12 @@ import { environment } from '../../../environments/environment.development';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms'; // Import FormsModule
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [CommonModule ,FormsModule],
+  providers:[DatePipe],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })
@@ -23,7 +24,7 @@ export class AdminComponent implements OnInit {
   errorMessage = '';
   private correctPassword = '123456'; // Set your secure password here
 
-  constructor(private http: HttpClient) {}
+  constructor(private DatePipe:DatePipe, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.fetchRooms();
@@ -48,15 +49,15 @@ export class AdminComponent implements OnInit {
           BookName: room.BookName,
           BookEmail: room.BookEmail,
           BookPhone: room.BookPhone,
-          BookFrom: room.BookFrom,
-          BookTo: room.BookTo,
+          BookFrom:this.DatePipe.transform( room.BookFrom,'yyyy-MM-dd'),
+          BookTo: this.DatePipe.transform(room.BookTo,'yyyy-MM-dd'),
           BookImg: environment.ImgUrl + room.BookImg,
           ConfirmCode: room.ConfirmCode,
           Confirmimage: environment.ImgUrl + room.Confirmimage,
           PlaceID: room.PlaceID,
-          placeName: room.placeName,
-          placeDesc: room.placeDesc,
-          placePrice: room.placePrice,
+          PlaceName: room.PlaceName,
+          PlaceDesc: room.PlaceDesc,
+          TotalPrice: room.TotalPrice,
         }));
       },
       error: (err) => {

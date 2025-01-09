@@ -15,8 +15,8 @@ export interface CardObject {
   providedIn: 'root',
 })
 export class DateService {
-    public globalStartdate: string = '';
-    public globalEnddate: string = '';
+    public globalStartdate: Date |null= null;
+    public globalEnddate:  Date |null= null;
    
     private resetSubject = new Subject<void>();
 
